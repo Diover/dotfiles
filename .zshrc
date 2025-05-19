@@ -1,3 +1,6 @@
+# Homebrew
+eval "$(/opt/homebrew/bin/brew shellenv)"
+
 if type brew &>/dev/null
 then
   FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
@@ -26,10 +29,6 @@ unset __conda_setup
 
 source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-
-# ---- Eza (better ls) -----
-alias ls="eza"
-# ----
 
 # Set up fzf key bindings and fuzzy completion
 source <(fzf --zsh)
