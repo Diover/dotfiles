@@ -47,3 +47,10 @@ setopt EXTENDED_HISTORY
 unset ZSH_AUTOSUGGEST_USE_ASYNC
 
 eval "$(starship init zsh)"
+
+###############################################################
+#  to add local customizations, create '~/.localrc' and
+#  add changes to it
+###############################################################
+[ -f "${HOME}/.localrc" ] && source "${HOME}/.localrc"
+
