@@ -1,26 +1,34 @@
 return {
   "nvim-lualine/lualine.nvim",
-  dependencies = { "nvim-tree/nvim-web-devicons" },
+  dependencies = { "echasnovski/mini.icons" },
   config = function()
     local lualine = require("lualine")
     local lazy_status = require("lazy.status") -- to configure lazy pending updates count
 
     -- configure lualine with modified theme
     lualine.setup({
-      --      options = {
-      --        theme = "gruvbox-material",
-      --      },
+      options = {
+        icons_enabled = false,
+        theme = "auto",
+        component_separators = "",
+        section_separators = "",
+      },
       sections = {
+        lualine_a = { "mode" },
+        lualine_b = { "branch" },
+        lualine_c = { "filename" },
         lualine_x = {
-          {
-            lazy_status.updates,
-            cond = lazy_status.has_updates,
-            color = { fg = "#ff9e64" },
-          },
-          { "encoding" },
-          { "fileformat" },
-          { "filetype" },
+          function()
+            local encoding = vim.o.fileencoding
+            if encoding == "" then
+              return vim.bo.fileformat .. " :: " .. vim.bo.filetype
+            else
+              return encoding .. " :: " .. vim.bo.fileformat .. " :: " .. vim.bo.filetype
+            end
+          end,
         },
+        lualine_y = { "progress" },
+        lualine_z = { "location" },
       },
     })
   end,

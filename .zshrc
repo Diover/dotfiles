@@ -45,7 +45,23 @@ setopt EXTENDED_HISTORY
 
 unset ZSH_AUTOSUGGEST_USE_ASYNC
 
+# Initialize starship.rs
 eval "$(starship init zsh)"
+
+# Prompt Engineering Starship
+PROMPT_NEEDS_NEWLINE=false
+
+precmd() {
+  if [[ "$PROMPT_NEEDS_NEWLINE" == true ]]; then
+    echo
+  fi
+  PROMPT_NEEDS_NEWLINE=true
+}
+
+clear() {
+  PROMPT_NEEDS_NEWLINE=false
+  command clear
+}
 
 ###############################################################
 #  to add local customizations, create '~/.localrc' and
