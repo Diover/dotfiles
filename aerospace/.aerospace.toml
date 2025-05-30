@@ -1,3 +1,6 @@
+# Start AeroSpace at login
+start-at-login = true
+
 # Place a copy of this config to ~/.aerospace.toml
 # After that, you can edit ~/.aerospace.toml to your liking
 
@@ -11,8 +14,6 @@ after-login-command = []
 # Available commands : https://nikitabobko.github.io/AeroSpace/commands
 after-startup-command = []
 
-# Start AeroSpace at login
-start-at-login = true
 
 # Normalizations. See: https://nikitabobko.github.io/AeroSpace/guide#normalization
 enable-normalization-flatten-containers = true
@@ -176,7 +177,7 @@ if.app-id = 'com.google.Chrome'
 run = "move-node-to-workspace 1"
 
 [[on-window-detected]]
-if.app-id = 'com.microsoft.VSCode'
+if.app-id = 'com.tinyspeck.slackmacgap'
 run = "move-node-to-workspace 2"
 
 [[on-window-detected]]
@@ -186,6 +187,14 @@ run = "move-node-to-workspace 3"
 [[on-window-detected]]
 if.app-id = 'com.sublimetext.4'
 run = "move-node-to-workspace 4"
+
+[[on-window-detected]]
+if.app-id = 'com.microsoft.VSCode'
+run = "move-node-to-workspace 5"
+
+[[on-window-detected]]
+if.app-name-regex-substring = "IntelliJ IDEA"
+run = "move-node-to-workspace 6"
 
 [[on-window-detected]]
 if.app-name-regex-substring = 'finder'

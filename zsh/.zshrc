@@ -37,7 +37,7 @@ source <(fzf --zsh)
 HISTSIZE=10000000
 SAVEHIST=10000000
 HISTORY_IGNORE="(ls|cd|pwd|exit|cd)*"
-HISTFILE="$HOME/.zhistory"
+HISTFILE="/Users/ssmirnov/.zhistory"
 HIST_STAMPS="yyyy-mm-dd"
 setopt INC_APPEND_HISTORY
 setopt HIST_IGNORE_DUPS
@@ -48,7 +48,7 @@ unset ZSH_AUTOSUGGEST_USE_ASYNC
 # Initialize starship.rs
 eval "$(starship init zsh)"
 
-# Prompt Engineering Starship
+# Prompt Engineering starship.rs
 PROMPT_NEEDS_NEWLINE=false
 
 precmd() {
@@ -63,9 +63,12 @@ clear() {
   command clear
 }
 
+# Append a path to user scripts at the end
+path+=('/Users/ssmirnov/.local/bin')
+
 ###############################################################
 #  to add local customizations, create '~/.localrc' and
 #  add changes to it
 ###############################################################
-[ -f "${HOME}/.localrc" ] && source "${HOME}/.localrc"
+[ -f "/Users/ssmirnov/.localrc" ] && source "/Users/ssmirnov/.localrc"
 
