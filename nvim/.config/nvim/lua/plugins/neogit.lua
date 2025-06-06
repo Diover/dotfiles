@@ -1,25 +1,38 @@
 return {
-  "NeogitOrg/neogit",
-  dependencies = {
-    "nvim-lua/plenary.nvim",  -- required
-    "sindrets/diffview.nvim", -- optional - Diff integration
+	"NeogitOrg/neogit",
+	dependencies = {
+		"nvim-lua/plenary.nvim", -- required
+		"sindrets/diffview.nvim", -- optional - Diff integration
+		"nvim-telescope/telescope.nvim", -- optional
+	},
+	config = function()
+		require("neogit").setup({
+			-- Changes what mode the Commit Editor starts in. `true` will leave nvim in normal mode, `false` will change nvim to
+			-- insert mode, and `"auto"` will change nvim to insert mode IF the commit message is empty, otherwise leaving it in
+			-- normal mode.
+			disable_insert_on_commit = true,
+			-- "ascii"   is the graph the git CLI generates
+			-- "unicode" is the graph like https://github.com/rbong/vim-flog
+			-- "kitty"   is the graph like https://github.com/isakbm/gitgraph.nvim - use https://github.com/rbong/flog-symbols if you don't use Kitty
+			graph_style = "unicode",
+			-- Allows a different telescope sorter. Defaults to 'fuzzy_with_index_bias'. The example below will use the native fzf
+			-- sorter instead. By default, this function returns `nil`.
+			-- telescope_sorter = function()
+			--     return require("telescope").extensions.fzf.native_fzf_sorter()
+			-- end,
+		})
 
-    -- Only one of these is needed.
-    "nvim-telescope/telescope.nvim", -- optional
-  },
-  config = function()
-    require('neogit').setup({})
-
-    vim.keymap.set('n', '<leader>gg', '<cmd>Neogit<CR>')
-    vim.keymap.set('n', '<leader>gd', function()
-      if next(require('diffview.lib').views) == nil then
-        vim.cmd('DiffviewOpen')
-      else
-        vim.cmd('DiffviewClose')
-      end
-    end)
-    vim.keymap.set('n', '<leader>gl', '<cmd>Neogit log<CR>')
-    vim.keymap.set('n', '<leader>gp', '<cmd>Neogit pull<CR>')
-    vim.keymap.set('n', '<leader>gP', '<cmd>Neogit push<CR>')
-  end
+		vim.keymap.set("n", "<leader>gg", "<cmd>Neogit<CR>")
+		vim.keymap.set("n", "<leader>gd", function()
+			if next(require("diffview.lib").views) == nil then
+				vim.cmd("DiffviewOpen")
+			else
+				vim.cmd("DiffviewClose")
+			end
+		end)
+		vim.keymap.set("n", "<leader>gc", "<cmd>Neogit commit<CR>")
+		vim.keymap.set("n", "<leader>gl", "<cmd>Neogit log<CR>")
+		vim.keymap.set("n", "<leader>gp", "<cmd>Neogit pull<CR>")
+		vim.keymap.set("n", "<leader>gP", "<cmd>Neogit push<CR>")
+	end,
 }

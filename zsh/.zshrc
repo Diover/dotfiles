@@ -66,6 +66,15 @@ clear() {
 # Append a path to user scripts at the end
 path+=('/Users/ssmirnov/.local/bin')
 
+# Open yazi as y and set the cwd to the last visited directory in yazi
+function y() {
+	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
+	yazi "$@" --cwd-file="$tmp"
+	IFS= read -r -d '' cwd < "$tmp"
+	[ -n "$cwd" ] && [ "$cwd" != "$PWD" ] && builtin cd -- "$cwd"
+	rm -f -- "$tmp"
+}
+
 ###############################################################
 #  to add local customizations, create '~/.localrc' and
 #  add changes to it
