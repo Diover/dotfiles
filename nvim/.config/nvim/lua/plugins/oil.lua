@@ -12,10 +12,8 @@ return {
 			autosave_changes = true,
 		},
 		keymaps = {
-			["<C-c>"] = { "actions.close", mode = "n" },
 			["q"] = { "actions.close", mode = "n" },
 			["<C-r>"] = "actions.refresh",
-			["g."] = { "actions.toggle_hidden", mode = "n" },
 			["<C-.>"] = { "actions.toggle_hidden", mode = "n" },
 		},
 		git = {
