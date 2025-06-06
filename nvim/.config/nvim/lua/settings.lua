@@ -116,3 +116,4 @@ vim.keymap.set("n", "<leader>ff", "<cmd>Telescope find_files hidden=true no_igno
 
 -- Open file explorer
 vim.keymap.set("n", "<leader>pv", "<cmd>Oil<cr>")
+vim.keymap.set("n", "-", "<cmd>Oil<cr>")
