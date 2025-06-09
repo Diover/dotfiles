@@ -2,8 +2,31 @@ return {
 	"NeogitOrg/neogit",
 	dependencies = {
 		"nvim-lua/plenary.nvim", -- required
-		"sindrets/diffview.nvim", -- optional - Diff integration
-		"nvim-telescope/telescope.nvim", -- optional
+		{
+			"sindrets/diffview.nvim",
+			opts = {
+				keymaps = {
+					view = {
+						{ "n", "q", "<Cmd>DiffviewClose<CR>", { desc = "Close menu" } },
+						{ "n", "tw", "<Cmd>windo set wrap<CR>", { desc = "Turn on word [W]rap" } },
+						{ "n", "tn", "<Cmd>windo set nowrap<CR>", { desc = "Turn off word [W]rap" } },
+					},
+					file_panel = {
+						{ "n", "q", "<Cmd>DiffviewClose<CR>", { desc = "Close menu" } },
+					},
+					file_history_panel = {
+						{ "n", "q", "<Cmd>DiffviewClose<CR>", { desc = "Close menu" } },
+					},
+				},
+				view = {
+					merge_tool = {
+						-- Config for conflicted files in diff views during a merge or rebase.
+						layout = "diff3_mixed",
+					},
+				},
+			},
+		},
+		"nvim-telescope/telescope.nvim",
 	},
 	config = function()
 		require("neogit").setup({
