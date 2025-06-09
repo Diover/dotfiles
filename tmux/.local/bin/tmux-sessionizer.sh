@@ -1,18 +1,5 @@
 #!/usr/bin/env zsh
-CONFIG_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/tmux-sessionizer"
-CONFIG_FILE="$CONFIG_DIR/tmux-sessionizer.conf"
-
-# config file example
-# ------------------------
-# # file: ~/.config/tmux-sessionizer/tmux-sessionizer.conf
-# # If set this override the default TS_SEARCH_PATHS (~/ ~/personal ~/personal/dev/env/.config)
-# TS_SEARCH_PATHS=(~/)
-# # If set this add additional search paths to the default TS_SEARCH_PATHS
-# # The number prefix is the depth for the Path [OPTIONAL]
-# TS_EXTRA_SEARCH_PATHS=(~/ghq:3 ~/Git:3 ~/.config:2)
-# # if set this override the TS_MAX_DEPTH (1)
-# TS_MAX_DEPTH=2
-# ------------------------
+CONFIG_FILE="$HOME/.config/tmux-sessionizer/tmux-sessionizer.conf"
 
 # test if the config file exists
 if [[ -f "$CONFIG_FILE" ]]; then
@@ -44,25 +31,11 @@ has_session() {
   tmux list-sessions | grep -q "^$1:"
 }
 
-hydrate() {
-  if [ -f "$2/.tmux-sessionizer" ]; then
-    tmux send-keys -t "$1" "source $2/.tmux-sessionizer" c-M
-  elif [ -f "$HOME/.tmux-sessionizer" ]; then
-    tmux send-keys -t "$1" "source $HOME/.tmux-sessionizer" c-M
-  fi
-}
-
 sanity_check
 
 # if TS_SEARCH_PATHS is not set use default
-[[ -n "$TS_SEARCH_PATHS" ]] || TS_SEARCH_PATHS=(~/ ~/personal ~/personal/dev/env/.config)
-
-# Add any extra search paths to the TS_SEARCH_PATHS array
-# e.g : EXTRA_SEARCH_PATHS=("$HOME/extra1:4" "$HOME/extra2")
-# note : Path can be suffixed with :number to limit or extend the depth of the search for the Path
-
-if [[ ${#TS_EXTRA_SEARCH_PATHS[@]} -gt 0 ]]; then
-  TS_SEARCH_PATHS+=("${TS_EXTRA_SEARCH_PATHS[@]}")
+if [ -z "${TS_SEARCH_PATHS+1}" ]; then
+  TS_SEARCH_PATHS=(~/)
 fi
 
 # utility function to find directories
@@ -70,52 +43,43 @@ find_dirs() {
   # list TMUX sessions
   if [[ -n "${TMUX}" ]]; then
     current_session=$(tmux display-message -p '#S')
-    tmux list-sessions -F "[TMUX] #{session_name}" 2>/dev/null | grep -vFx "[TMUX] $current_session"
+    tmux list-sessions -F "[OPEN] #{session_name}" 2>/dev/null | grep -vFx "$current_session"
   else
-    tmux list-sessions -F "[TMUX] #{session_name}" 2>/dev/null
+    tmux list-sessions -F "[OPEN] #{session_name}" 2>/dev/null
   fi
 
   # note: TS_SEARCH_PATHS is an array of paths to search for directories
   # if the path ends with :number, it will search for directories with a max depth of number ;)
   # if there is no number, it will search for directories with a max depth defined by TS_MAX_DEPTH or 1 if not set
   for entry in "${TS_SEARCH_PATHS[@]}"; do
-    # Check if entry as :number as suffix then adapt the maxdepth parameter
-    if [[ "$entry" =~ ^([^:]+):([0-9]+)$ ]]; then
-      path="${BASH_REMATCH[1]}"
-      depth="${BASH_REMATCH[2]}"
-    else
-      path="$entry"
-    fi
-
-    [[ -d "$path" ]] && find "$path" -mindepth 1 -maxdepth "${depth:-${TS_MAX_DEPTH:-1}}" -path '*/.git' -prune -o -type d -print
+    [[ -d "$entry" ]] && find "$entry" -mindepth 1 -maxdepth 1 -path '*/.git' -prune -o -type d -print
   done
 }
 
 if [[ $# -eq 1 ]]; then
   selected="$1"
 else
-  selected=$(find_dirs | fzf)
+  selected=$(find_dirs | fzf --reverse --header open-tmux-session --height="~100%" )
 fi
 
 if [[ -z $selected ]]; then
   exit 0
 fi
 
-if [[ "$selected" =~ ^\[TMUX\]\ (.+)$ ]]; then
-  selected="${BASH_REMATCH[1]}"
+if [[ "$selected" =~ "^\[OPEN\]\ (.+)$" ]]; then
+  selected=$match[1]
 fi
+echo $selected
 
 selected_name=$(basename "$selected" | tr . _)
 tmux_running=$(pgrep tmux)
 
 if [[ -z $TMUX ]] && [[ -z $tmux_running ]]; then
   tmux new-session -ds "$selected_name" -c "$selected"
-  hydrate "$selected_name" "$selected"
 fi
 
 if ! has_session "$selected_name"; then
-  tmux new-session -ds "$selected_name" -c "$selected"
-  hydrate "$selected_name" "$selected"
+    tmux new-session -ds "$selected_name" -c "$selected"
 fi
 
 switch_to "$selected_name"
