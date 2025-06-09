@@ -83,11 +83,8 @@ vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>")
 -- Diagnostic keymaps
 vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Open diagnostic [Q]uickfix list" })
 
-vim.keymap.set("n", "<leader>pv", vim.cmd.Ex) -- Open FileTree extension
-
 vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
 vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
-
 -- Remove the line below, but keep the cursor at the same position
 vim.keymap.set("n", "J", "mzJ`z")
 
@@ -102,18 +99,17 @@ vim.keymap.set("n", "<leader>p", '"_dP')
 vim.keymap.set("n", "<leader>y", '"+y')
 vim.keymap.set("v", "<leader>y", '"+y')
 vim.keymap.set("n", "<leader>Y", '"+Y')
-vim.keymap.set("v", "y", "ygv<Esc>")
 
 vim.keymap.set("n", "<leader>d", '"_d')
 vim.keymap.set("v", "<leader>d", '"_d')
+
+-- Search and replace word under the cursor
+vim.keymap.set("n", "<Leader>r", [[:%s/\<<C-r><C-w>\>//g<Left><Left>]])
 
 vim.keymap.set("n", "Q", "<nop>")
 
 -- Write file as sudo
 vim.keymap.set("c", "w!!", "w !sudo tee > /dev/null %", { silent = true, desc = "Write as Sudo" })
-
--- Search
-vim.keymap.set("n", "<leader>ff", "<cmd>Telescope find_files hidden=true no_ignore=true<cr>") -- [TELESCOPE] Find File
 
 -- Open file explorer
 vim.keymap.set("n", "<leader>pv", "<cmd>Oil<cr>")
