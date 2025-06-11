@@ -109,7 +109,11 @@ vim.keymap.set("n", "<Leader>r", [[:%s/\<<C-r><C-w>\>//g<Left><Left>]])
 vim.keymap.set("n", "Q", "<nop>")
 
 -- Write file as sudo
-vim.keymap.set("c", "w!!", "w !sudo tee > /dev/null %", { silent = true, desc = "Write as Sudo" })
+-- This keymap makes typing "w" in the command mode freeze for some reason
+-- vim.keymap.set("c", "w!!", "w !sudo tee > /dev/null %", { silent = true, desc = "Write as Sudo" })
+
+--Save without formatting
+vim.keymap.set("n", "<leader>wf", ":noautocmd w<CR>", { desc = "Save without [F]ormatting" })
 
 -- Open file explorer
 vim.keymap.set("n", "<leader>pv", "<cmd>Oil<cr>")
