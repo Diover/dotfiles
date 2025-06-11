@@ -31,6 +31,10 @@ return {
 				},
 			},
 		},
+		{
+			"dnlhc/glance.nvim",
+			cmd = "Glance",
+		},
 	},
 	config = function()
 		-- Brief aside: **What is LSP?**
@@ -94,6 +98,11 @@ return {
 				--  This is where a variable was first declared, or where a function is defined, etc.
 				--  To jump back, press <C-t>.
 				map("grd", require("telescope.builtin").lsp_definitions, "[G]oto [D]efinition")
+
+				map("gD", "<CMD>Glance definitions<CR>", "Glance [G]oto [D]efinition")
+				map("gR", "<CMD>Glance references<CR>", "Glance [G]oto [R]eferences")
+				map("gY", "<CMD>Glance type_definitions<CR>", "Glance [G]oto t[Y]pe definitions")
+				map("gM", "<CMD>Glance implementations<CR>", "Glance [G]oto [I]mplementations")
 
 				-- WARN: This is not Goto Definition, this is Goto Declaration.
 				--  For example, in C this would take you to the header.
