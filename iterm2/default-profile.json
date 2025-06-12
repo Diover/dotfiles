@@ -1,7 +1,7 @@
 {
   "Profiles": [
     {
-      "Close Sessions On End": true,
+      "Non-ASCII Anti Aliased": true,
       "Ansi 15 Color (Dark)": {
         "Red Component": 0.75294117647058822,
         "Color Space": "sRGB",
@@ -9,7 +9,13 @@
         "Alpha Component": 1,
         "Green Component": 0.792156862745098
       },
-      "Non-ASCII Anti Aliased": true,
+      "Foreground Color (Dark)": {
+        "Red Component": 0.75294117647058822,
+        "Color Space": "sRGB",
+        "Blue Component": 0.96078431372549022,
+        "Alpha Component": 1,
+        "Green Component": 0.792156862745098
+      },
       "Cursor Text Color": {
         "Green Component": 1,
         "Red Component": 1,
@@ -42,7 +48,7 @@
         "Alpha Component": 1,
         "Green Component": 0.1058823529411765
       },
-      "Guid": "default-profile-guid",
+      "Guid": "C8ACDAC1-0614-48CA-8937-959033DB846E",
       "Cursor Color (Dark)": {
         "Red Component": 0.75294117647058822,
         "Color Space": "sRGB",
@@ -58,7 +64,7 @@
         "Green Component": 0.20392156862745101
       },
       "Only The Default BG Color Uses Transparency": true,
-      "Scrollback Lines": 1000,
+      "Scrollback Lines": 0,
       "Badge Color (Dark)": {
         "Red Component": 1,
         "Color Space": "sRGB",
@@ -67,13 +73,14 @@
         "Green Component": 0.1491314172744751
       },
       "Ansi 0 Color (Dark)": {
-        "Red Component": 0.082352941176470601,
+        "Red Component": 0.082352941176470615,
         "Color Space": "sRGB",
         "Blue Component": 0.1176470588235294,
         "Alpha Component": 1,
-        "Green Component": 0.086274509803921595
+        "Green Component": 0.086274509803921623
       },
       "Transparency": 0.11182085866261399,
+      "Bound Hosts": [],
       "Use Bright Bold": true,
       "Horizontal Spacing": 1,
       "Ansi 13 Color (Light)": {
@@ -203,13 +210,6 @@
         "Alpha Component": 1,
         "Green Component": 0.46274509803921571
       },
-      "Badge Color (Light)": {
-        "Red Component": 0.92929404973983765,
-        "Color Space": "P3",
-        "Blue Component": 0.13960540294647217,
-        "Alpha Component": 0.5,
-        "Green Component": 0.25479039549827576
-      },
       "Ansi 14 Color (Dark)": {
         "Red Component": 0.49019607843137247,
         "Color Space": "sRGB",
@@ -217,17 +217,17 @@
         "Alpha Component": 1,
         "Green Component": 0.81176470588235294
       },
-      "Tags": [],
-      "Link Color (Dark)": {
-        "Red Component": 0.45098039215686281,
-        "Color Space": "sRGB",
-        "Blue Component": 0.792156862745098,
-        "Alpha Component": 1,
-        "Green Component": 0.85490196078431369
+      "Badge Color (Light)": {
+        "Red Component": 0.92929404973983765,
+        "Color Space": "P3",
+        "Blue Component": 0.13960540294647217,
+        "Alpha Component": 0.5,
+        "Green Component": 0.25479039549827576
       },
+      "Tags": [],
       "Custom Command": "No",
       "Jobs to Ignore": ["rlogin", "ssh", "slogin", "telnet"],
-      "Use Non-ASCII Font": false,
+      "Use Non-ASCII Font": true,
       "Custom Directory": "Advanced",
       "Use Selected Text Color (Light)": true,
       "Bold Color (Light)": {
@@ -242,6 +242,13 @@
         "Blue Component": 0.3333333432674408
       },
       "Name": "default-profile",
+      "Link Color (Dark)": {
+        "Red Component": 0.45098039215686281,
+        "Color Space": "sRGB",
+        "Blue Component": 0.792156862745098,
+        "Alpha Component": 1,
+        "Green Component": 0.85490196078431369
+      },
       "Ansi 11 Color (Dark)": {
         "Red Component": 0.8784313725490196,
         "Color Space": "sRGB",
@@ -311,13 +318,15 @@
         "Red Component": 0.3333333432674408,
         "Blue Component": 0.3333333432674408
       },
-      "Normal Font": "JetBrainsMonoNFM-Regular 15",
+      "Normal Font": "MesloLGS-NF-Regular 15",
       "Use Selected Text Color (Dark)": true,
+      "Has Hotkey": false,
       "Foreground Color": {
         "Green Component": 0.73333334922790527,
         "Red Component": 0.73333334922790527,
         "Blue Component": 0.73333334922790527
       },
+      "Special Font Config": "{\"version\":1,\"entries\":[{\"fontName\":\"Flog Symbols\",\"start\":62928,\"count\":62,\"destination\":62928}]}",
       "Match Background Color (Light)": {
         "Red Component": 1,
         "Color Space": "P3",
@@ -357,7 +366,7 @@
       },
       "Flashing Bell": false,
       "Brighten Bold Text (Light)": true,
-      "Non Ascii Font": "Monaco 12",
+      "Non Ascii Font": "MesloLGS-NF-Regular 12",
       "Ansi 7 Color (Dark)": {
         "Red Component": 0.66274509803921566,
         "Color Space": "sRGB",
@@ -623,18 +632,13 @@
         "Red Component": 0,
         "Blue Component": 0
       },
+      "Close Sessions On End": true,
       "Ansi 12 Color (Light)": {
         "Green Component": 0.3333333432674408,
         "Red Component": 0.3333333432674408,
         "Blue Component": 1
-      },
-      "Foreground Color (Dark)": {
-        "Red Component": 0.75294117647058822,
-        "Color Space": "sRGB",
-        "Blue Component": 0.96078431372549022,
-        "Alpha Component": 1,
-        "Green Component": 0.792156862745098
       }
     }
   ]
 }
+

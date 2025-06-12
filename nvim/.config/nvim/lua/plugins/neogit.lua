@@ -44,11 +44,11 @@ return {
 			-- Changes what mode the Commit Editor starts in. `true` will leave nvim in normal mode, `false` will change nvim to
 			-- insert mode, and `"auto"` will change nvim to insert mode IF the commit message is empty, otherwise leaving it in
 			-- normal mode.
-			disable_insert_on_commit = true,
+			disable_insert_on_commit = "auto",
 			-- "ascii"   is the graph the git CLI generates
 			-- "unicode" is the graph like https://github.com/rbong/vim-flog
 			-- "kitty"   is the graph like https://github.com/isakbm/gitgraph.nvim - use https://github.com/rbong/flog-symbols if you don't use Kitty
-			graph_style = "unicode",
+			graph_style = "kitty",
 			-- Allows a different telescope sorter. Defaults to 'fuzzy_with_index_bias'. The example below will use the native fzf
 			-- sorter instead. By default, this function returns `nil`.
 			-- telescope_sorter = function()
