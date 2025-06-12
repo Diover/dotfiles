@@ -74,6 +74,14 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 	end,
 })
 
+vim.api.nvim_create_autocmd({ "FileType" }, {
+	group = vim.api.nvim_create_augroup("userconfig-close-help", { clear = true }),
+	desc = "keymap 'q' to close help/quickfix/netrw/etc windows",
+	pattern = "help,startuptime,qf,lspinfo,man,checkhealth",
+	callback = function()
+		vim.keymap.set("n", "q", "<C-w>c", { buffer = true, desc = "Quit (or Close) help, quickfix, etc windows" })
+	end,
+})
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
 
@@ -83,15 +91,49 @@ vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>")
 -- Diagnostic keymaps
 vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Open diagnostic [Q]uickfix list" })
 
+-- Selection movement
 vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
 vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
+vim.keymap.set("v", "<", "<gv")
+vim.keymap.set("v", ">", ">gv")
+
 -- Remove the line below, but keep the cursor at the same position
 vim.keymap.set("n", "J", "mzJ`z")
 
+-- Enter empty lines
+-- vim.keymap.set("n", "<CR>", '@="m`o<C-V><Esc>``"<CR>')
+-- vim.keymap.set("n", "<S-CR>", '@="m`O<C-V><Esc>``"<CR>')
+-- vim.keymap.set("n", "<CR>", "<Cmd>call append(line('.') - 1, repeat([''], v:count1))<CR>")
+-- vim.keymap.set("n", "<S-CR>", "<Cmd>call append(line('.'),     repeat([''], v:count1))<CR>")
+vim.keymap.set("n", "_", "mzO<Esc>`z", { desc = "add blank line above" })
+vim.keymap.set("n", "<CR>", "mzo<Esc>`z", { desc = "add blank line below" })
+
+-- Center after scrolling and search
 vim.keymap.set("n", "<C-d>", "<C-d>zz")
 vim.keymap.set("n", "<C-u>", "<C-u>zz")
 vim.keymap.set("n", "n", "nzzzv")
 vim.keymap.set("n", "N", "Nzzzv")
+
+-- Window movement
+vim.keymap.set("n", "<C-h>", "<C-w>h")
+vim.keymap.set("n", "<C-j>", "<C-w>j")
+vim.keymap.set("n", "<C-k>", "<C-w>k")
+vim.keymap.set("n", "<C-l>", "<C-w>l")
+vim.keymap.set("t", "<C-h>", "<cmd>wincmd h<CR>")
+vim.keymap.set("t", "<C-j>", "<cmd>wincmd j<CR>")
+vim.keymap.set("t", "<C-k>", "<cmd>wincmd k<CR>")
+vim.keymap.set("t", "<C-l>", "<cmd>wincmd l<CR>")
+
+-- Window resizing
+vim.keymap.set("n", "<C-Up>", ":resize -4<CR>")
+vim.keymap.set("n", "<C-Down>", ":resize +4<CR>")
+vim.keymap.set("n", "<C-Left>", ":vertical resize -4<CR>")
+vim.keymap.set("n", "<C-Right>", ":vertical resize +4<CR>")
+
+vim.keymap.set("t", "<C-Up>", "<cmd>resize -4<CR>")
+vim.keymap.set("t", "<C-Down>", "<cmd>resize +4<CR>")
+vim.keymap.set("t", "<C-Left>", "<cmd>vertical resize -4<CR>")
+vim.keymap.set("t", "<C-Right>", "<cmd>vertical resize +4<CR>")
 
 -- Paste without losing the buffer
 vim.keymap.set("n", "<leader>p", '"_dP')
@@ -103,8 +145,10 @@ vim.keymap.set("n", "<leader>Y", '"+Y')
 vim.keymap.set("n", "<leader>d", '"_d')
 vim.keymap.set("v", "<leader>d", '"_d')
 
+-- Delete current buffer
+vim.keymap.set("n", "<leader>bd", ":bd<CR>")
 -- Search and replace word under the cursor
-vim.keymap.set("n", "<Leader>r", [[:%s/\<<C-r><C-w>\>//g<Left><Left>]])
+vim.keymap.set("n", "<leader>r", [[:%s/\<<C-r><C-w>\>//g<Left><Left>]])
 
 vim.keymap.set("n", "Q", "<nop>")
 

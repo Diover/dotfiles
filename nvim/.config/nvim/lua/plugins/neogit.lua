@@ -5,6 +5,7 @@ return {
 		{
 			"sindrets/diffview.nvim",
 			opts = {
+				enhanced_diff_hl = false,
 				keymaps = {
 					view = {
 						{ "n", "q", "<Cmd>DiffviewClose<CR>", { desc = "Close menu" } },
@@ -19,9 +20,19 @@ return {
 					},
 				},
 				view = {
+					default = {
+						disable_diagnostics = true, -- Temporarily disable diagnostics for diff buffers while in the view.
+					},
 					merge_tool = {
 						-- Config for conflicted files in diff views during a merge or rebase.
 						layout = "diff3_mixed",
+					},
+				},
+				file_panel = {
+					listing_style = "list",
+					win_config = {
+						position = "bottom",
+						height = 18,
 					},
 				},
 			},
