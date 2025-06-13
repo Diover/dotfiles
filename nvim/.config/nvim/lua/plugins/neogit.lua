@@ -68,5 +68,26 @@ return {
 		vim.keymap.set("n", "<leader>gl", "<cmd>Neogit log<CR>")
 		vim.keymap.set("n", "<leader>gp", "<cmd>Neogit pull<CR>")
 		vim.keymap.set("n", "<leader>gP", "<cmd>Neogit push<CR>")
+		vim.keymap.set("n", "<leader>gb", "<cmd>Neogit branch<CR>")
+		vim.keymap.set("n", "<leader>gZ", "<cmd>Neogit stash<CR>")
+		vim.keymap.set("n", "<leader>gX", "<cmd>Neogit reset<CR>")
+		vim.keymap.set("n", "<leader>gf", "<cmd>Neogit fetch<CR>")
+		vim.keymap.set("n", "<leader>gA", "<cmd>Neogit cherry_pick<CR>")
+		vim.keymap.set("n", "<leader>gt", "<cmd>Neogit tag<CR>")
+		vim.keymap.set("n", "<leader>gr", "<cmd>Neogit rebase<CR>")
+		vim.keymap.set("n", "<leader>gv", "<cmd>Neogit revert<CR>")
+
+		vim.keymap.set(
+			"n",
+			"<leader>gld",
+			"<cmd>DiffviewOpen origin/HEAD...HEAD --imply-local<CR>",
+			{ desc = "[G]it [L]ist [D]iff against base" }
+		)
+		vim.keymap.set(
+			"n",
+			"<leader>gls",
+			"<cmd>DiffviewFileHistory -g --range=stash<CR>",
+			{ desc = "[G]it [L]ist [S]tashes" }
+		)
 	end,
 }
