@@ -28,6 +28,7 @@ return {
 				"bash",
 				"python",
 				"java",
+				"yaml",
 			},
 
 			-- Automatically install missing parsers when entering buffer
