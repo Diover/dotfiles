@@ -32,13 +32,18 @@ return {
 		require("telescope").setup({
 			-- You can put your default mappings / updates / etc. in here
 			--  All the info you're looking for is in `:help telescope.setup()`
-			--
-			-- defaults = {
-			--   mappings = {
-			--     i = { ['<c-enter>'] = 'to_fuzzy_refine' },
-			--   },
-			-- },
-			-- pickers = {}
+
+			defaults = {
+				path_display = { shorten = { len = 2, exclude = { 1, -1, -2, -3 } } },
+				-- path_display = { "filename_first" },
+				-- path_display = { "smart" },
+				dynamic_preview_title = true,
+				sorting_strategy = "ascending",
+				layout_strategy = "horizontal",
+				layout_config = {
+					prompt_position = "top",
+				},
+			},
 			extensions = {
 				["ui-select"] = {
 					require("telescope.themes").get_dropdown(),
