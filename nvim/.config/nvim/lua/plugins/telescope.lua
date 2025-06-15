@@ -33,6 +33,12 @@ return {
 			-- You can put your default mappings / updates / etc. in here
 			--  All the info you're looking for is in `:help telescope.setup()`
 
+			pickers = {
+				find_files = {
+					hidden = true,
+				},
+			},
+
 			defaults = {
 				path_display = { shorten = { len = 2, exclude = { 1, -1, -2, -3 } } },
 				-- path_display = { "filename_first" },
@@ -43,12 +49,29 @@ return {
 				layout_config = {
 					prompt_position = "top",
 				},
+				file_ignore_patterns = { ".git" },
+
+				-- Needed by live_grep_args
+				vimgrep_arguments = {
+					-- Defaults
+					-- all required except `--smart-case`
+					"rg",
+					"--color=never",
+					"--no-heading",
+					"--with-filename",
+					"--line-number",
+					"--column",
+					"--smart-case",
+
+					-- additional options
+					"--hidden",
+				},
 			},
 			extensions = {
 				["ui-select"] = {
 					require("telescope.themes").get_dropdown(),
 				},
-				["live_grep_args"] = {
+				live_grep_args = {
 					auto_quoting = true, -- enable/disable auto-quoting
 					-- define mappings, e.g.
 					mappings = { -- extend mappings
@@ -56,8 +79,11 @@ return {
 							-- More information about ripgrep flags:
 							-- https://github.com/BurntSushi/ripgrep/blob/master/GUIDE.md
 							["<C-k>"] = lga_actions.quote_prompt(),
-							["<C-h>"] = lga_actions.quote_prompt({ postfix = " --hidden " }),
-							["<C-i>"] = lga_actions.quote_prompt({ postfix = " --iglob " }),
+							-- Case-insensitive glob. Later globs override previous ones.
+							-- Examples: --glob **/plugin/**/*.lua, --glob !*.toml
+							["<C-g>"] = lga_actions.quote_prompt({ postfix = " --iglob " }),
+							["<C-t>"] = lga_actions.quote_prompt({ postfix = " --type " }), -- Type aliases are used (see rg --type-list). The "all" type is used to cover all available types.
+							["<C-i>"] = lga_actions.quote_prompt({ postfix = " --no-ignore" }),
 							-- freeze the current list and start a fuzzy search in the frozen list
 							["<C-space>"] = lga_actions.to_fuzzy_refine,
 						},
@@ -72,33 +98,50 @@ return {
 
 		-- See `:help telescope.builtin`
 		local builtin = require("telescope.builtin")
+		local live_grep_args_shortcuts = require("telescope-live-grep-args.shortcuts")
 		vim.keymap.set("n", "<leader>sh", builtin.help_tags, { desc = "[S]earch [H]elp" })
 		vim.keymap.set("n", "<leader>sk", builtin.keymaps, { desc = "[S]earch [K]eymaps" })
-		vim.keymap.set("n", "<leader>ss", builtin.builtin, { desc = "[S]earch [S]elect Telescope" })
-		vim.keymap.set("n", "<leader>sw", builtin.grep_string, { desc = "[S]earch current [W]ord" })
+		vim.keymap.set("n", "<leader>si", builtin.builtin, { desc = "[S]earch bu[I]lt-in Telescope" })
 		vim.keymap.set(
 			"n",
-			"<leader>sg",
+			"<leader>sw",
+			live_grep_args_shortcuts.grep_word_under_cursor,
+			{ desc = "[S]earch current [W]ord" }
+		)
+		vim.keymap.set(
+			"v",
+			"<leader>sw",
+			live_grep_args_shortcuts.grep_visual_selection,
+			{ desc = "[S]earch current [W]ord (visual selection)" }
+		)
+		vim.keymap.set(
+			"n",
+			"<leader><leader>",
 			":lua require('telescope').extensions.live_grep_args.live_grep_args()<CR>",
 			{ desc = "[S]earch by [G]rep" }
 		)
-		vim.keymap.set("n", "<leader>sf", function()
-			builtin.find_files({ hidden = true })
-		end, { desc = "[S]earch [F]iles" })
-		-- Shortcut for searching your Neovim configuration files
-		vim.keymap.set("n", "<leader>sn", function()
-			builtin.find_files({ cwd = vim.fn.stdpath("config") })
-		end, { desc = "[S]earch [N]eovim files" })
+		vim.keymap.set("n", "<leader>sf", builtin.find_files, { desc = "[S]earch [F]iles" })
 
-		vim.keymap.set("n", "<leader>si", builtin.git_files, { desc = "[S]earch g[I]t files" })
-		vim.keymap.set("n", "<leader>sc", builtin.git_commits, { desc = "[S]earch git [C]ommits" })
-		vim.keymap.set("n", "<leader>sb", builtin.git_branches, { desc = "[S]earch git [B]ranches" })
-		vim.keymap.set("n", "<leader>su", builtin.git_bcommits, { desc = "[S]earch git commits for current b[U]ffer" })
+		-- Shortcut for searching your Neovim configuration files
+		vim.keymap.set("n", "<leader>sc", function()
+			builtin.find_files({ cwd = vim.fn.stdpath("config") })
+		end, { desc = "[S]earch neovim [C]onfig files" })
+
+		vim.keymap.set("n", "<leader>sgf", builtin.git_files, { desc = "[S]earch [G]it [F]iles" })
+		vim.keymap.set("n", "<leader>sgs", builtin.git_status, { desc = "[S]earch [G]it [S]tatus" })
+		vim.keymap.set("n", "<leader>sgc", builtin.git_commits, { desc = "[S]earch [G]it [C]ommits" })
+		vim.keymap.set("n", "<leader>sgb", builtin.git_branches, { desc = "[S]earch [G]it [B]ranches" })
+		vim.keymap.set(
+			"n",
+			"<leader>sgu",
+			builtin.git_bcommits,
+			{ desc = "[S]earch [G]it commits for current b[U]ffer" }
+		)
 		vim.keymap.set(
 			"v",
-			"<leader>su",
+			"<leader>sgu",
 			builtin.git_bcommits_range,
-			{ desc = "[S]earch git commits for current line selection in current b[U]ffer" }
+			{ desc = "[S]earch [G]it commits for current line selection in current b[U]ffer" }
 		)
 
 		vim.keymap.set("n", "<leader>sd", builtin.diagnostics, { desc = "[S]earch [D]iagnostics" })
@@ -106,7 +149,7 @@ return {
 
 		vim.keymap.set("n", "<leader>sr", builtin.resume, { desc = "[S]earch [R]esume" })
 		vim.keymap.set("n", "<leader>s.", builtin.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
-		vim.keymap.set("n", "<leader><leader>", builtin.buffers, { desc = "[ ] Find existing buffers" })
+		vim.keymap.set("n", "<leader>sb", builtin.buffers, { desc = "[S]earch existing [B]uffers" })
 
 		-- Slightly advanced example of overriding default behavior and theme
 		vim.keymap.set("n", "<leader>/", function()
