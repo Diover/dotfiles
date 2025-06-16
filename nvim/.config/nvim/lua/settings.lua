@@ -77,7 +77,7 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 vim.api.nvim_create_autocmd({ "FileType" }, {
 	group = vim.api.nvim_create_augroup("userconfig-close-help", { clear = true }),
 	desc = "keymap 'q' to close help/quickfix/netrw/etc windows",
-	pattern = "help,startuptime,qf,lspinfo,man,checkhealth,gitsigns-blame",
+	pattern = "help,startuptime,qf,lspinfo,man,checkhealth,gitsigns-blame,undotree",
 	callback = function()
 		vim.keymap.set("n", "q", "<C-w>c", { buffer = true, desc = "Quit (or Close) help, quickfix, etc windows" })
 	end,
