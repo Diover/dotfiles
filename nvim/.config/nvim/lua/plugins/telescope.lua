@@ -31,7 +31,7 @@ return {
 		local lga_actions = require("telescope-live-grep-args.actions")
 		require("telescope").setup({
 			-- You can put your default mappings / updates / etc. in here
-			--  All the info you're looking for is in `:help telescope.setup()`
+			-- All the info you're looking for is in `:help telescope.setup()`
 
 			pickers = {
 				find_files = {
@@ -49,7 +49,7 @@ return {
 				layout_config = {
 					prompt_position = "top",
 				},
-				file_ignore_patterns = { ".git" },
+				file_ignore_patterns = { "^.git/" },
 
 				-- Needed by live_grep_args
 				vimgrep_arguments = {
@@ -98,6 +98,7 @@ return {
 
 		-- See `:help telescope.builtin`
 		local builtin = require("telescope.builtin")
+		local live_grep_args = require("telescope").extensions.live_grep_args
 		local live_grep_args_shortcuts = require("telescope-live-grep-args.shortcuts")
 		vim.keymap.set("n", "<leader>sh", builtin.help_tags, { desc = "[S]earch [H]elp" })
 		vim.keymap.set("n", "<leader>sk", builtin.keymaps, { desc = "[S]earch [K]eymaps" })
@@ -114,12 +115,7 @@ return {
 			live_grep_args_shortcuts.grep_visual_selection,
 			{ desc = "[S]earch current [W]ord (visual selection)" }
 		)
-		vim.keymap.set(
-			"n",
-			"<leader><leader>",
-			":lua require('telescope').extensions.live_grep_args.live_grep_args()<CR>",
-			{ desc = "[S]earch by [G]rep" }
-		)
+		vim.keymap.set("n", "<leader><leader>", live_grep_args.live_grep_args, { desc = "[ ] Search by live grep" })
 		vim.keymap.set("n", "<leader>sf", builtin.find_files, { desc = "[S]earch [F]iles" })
 
 		-- Shortcut for searching your Neovim configuration files
@@ -163,7 +159,7 @@ return {
 		-- It's also possible to pass additional configuration options.
 		--  See `:help telescope.builtin.live_grep()` for information about particular keys
 		vim.keymap.set("n", "<leader>s/", function()
-			builtin.live_grep({
+			live_grep_args.live_grep_args({
 				grep_open_files = true,
 				prompt_title = "Live Grep in Open Files",
 			})
