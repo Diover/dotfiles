@@ -65,6 +65,26 @@ return {
 			harpoon:list():select(6)
 		end, { desc = "Harpoon go to item 6" })
 
+		-- Same keys, but replacing items instead
+		vim.keymap.set("n", "<leader>h<leader>j", function()
+			harpoon:list():replace_at(1)
+		end, { desc = "Harpoon go to item 1" })
+		vim.keymap.set("n", "<leader>h<leader>k", function()
+			harpoon:list():replace_at(2)
+		end, { desc = "Harpoon go to item 2" })
+		vim.keymap.set("n", "<leader>h<leader>l", function()
+			harpoon:list():replace_at(3)
+		end, { desc = "Harpoon go to item 3" })
+		vim.keymap.set("n", "<leader>h<leader>;", function()
+			harpoon:list():replace_at(4)
+		end, { desc = "Harpoon go to item 4" })
+		vim.keymap.set("n", "<leader>h<leader>m", function()
+			harpoon:list():replace_at(5)
+		end, { desc = "Harpoon go to item 5" })
+		vim.keymap.set("n", "<leader>h<leader>,", function()
+			harpoon:list():replace_at(6)
+		end, { desc = "Harpoon go to item 6" })
+
 		-- Toggle previous & next buffers stored within Harpoon list
 		vim.keymap.set("n", "<leader>h<Tab>", function()
 			harpoon:list():next()
