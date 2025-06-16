@@ -137,7 +137,7 @@ vim.keymap.set("t", "<C-Right>", "<cmd>vertical resize +15<CR>")
 
 -- Paste without losing the buffer
 vim.keymap.set("n", "<leader>p", '"_dP')
-
+vim.keymap.set("i", "<C-p>", "<Esc>p", { desc = "Paste buffer (insert mode), exit to normal mode" })
 vim.keymap.set("n", "<leader>y", '"+y')
 vim.keymap.set("v", "<leader>y", '"+y')
 vim.keymap.set("n", "<leader>Y", '"+Y')
