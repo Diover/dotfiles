@@ -77,7 +77,7 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 vim.api.nvim_create_autocmd({ "FileType" }, {
 	group = vim.api.nvim_create_augroup("userconfig-close-help", { clear = true }),
 	desc = "keymap 'q' to close help/quickfix/netrw/etc windows",
-	pattern = "help,startuptime,qf,lspinfo,man,checkhealth",
+	pattern = "help,startuptime,qf,lspinfo,man,checkhealth,gitsigns-blame",
 	callback = function()
 		vim.keymap.set("n", "q", "<C-w>c", { buffer = true, desc = "Quit (or Close) help, quickfix, etc windows" })
 	end,
@@ -125,15 +125,15 @@ vim.keymap.set("t", "<C-k>", "<cmd>wincmd k<CR>")
 vim.keymap.set("t", "<C-l>", "<cmd>wincmd l<CR>")
 
 -- Window resizing
-vim.keymap.set("n", "<C-Up>", ":resize -4<CR>")
-vim.keymap.set("n", "<C-Down>", ":resize +4<CR>")
-vim.keymap.set("n", "<C-Left>", ":vertical resize -4<CR>")
-vim.keymap.set("n", "<C-Right>", ":vertical resize +4<CR>")
+vim.keymap.set("n", "<C-Up>", ":resize -15<CR>")
+vim.keymap.set("n", "<C-Down>", ":resize +15<CR>")
+vim.keymap.set("n", "<C-Left>", ":vertical resize -15<CR>")
+vim.keymap.set("n", "<C-Right>", ":vertical resize +15<CR>")
 
-vim.keymap.set("t", "<C-Up>", "<cmd>resize -4<CR>")
-vim.keymap.set("t", "<C-Down>", "<cmd>resize +4<CR>")
-vim.keymap.set("t", "<C-Left>", "<cmd>vertical resize -4<CR>")
-vim.keymap.set("t", "<C-Right>", "<cmd>vertical resize +4<CR>")
+vim.keymap.set("t", "<C-Up>", "<cmd>resize -15<CR>")
+vim.keymap.set("t", "<C-Down>", "<cmd>resize +15<CR>")
+vim.keymap.set("t", "<C-Left>", "<cmd>vertical resize -15<CR>")
+vim.keymap.set("t", "<C-Right>", "<cmd>vertical resize +15<CR>")
 
 -- Paste without losing the buffer
 vim.keymap.set("n", "<leader>p", '"_dP')
