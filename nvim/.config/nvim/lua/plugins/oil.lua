@@ -50,25 +50,21 @@ return {
 			["<leader>cf"] = {
 				desc = "[C]opy [F]ilename",
 				callback = function()
-					local filename = vim.fn.expand("<cWORD>"):gsub("/+$", "")
-					vim.fn.setreg("+", filename)
+					vim.fn.setreg("+", require("oil").get_cursor_entry().name)
 				end,
 			},
 			["<leader>cb"] = {
 				desc = "[C]opy [B]ase name",
 				callback = function()
-					-- Copy the word under cursor, remove trailing "/", get the basename (remove extensions)
-					local filename = vim.fn.expand("<cWORD>"):gsub("/+$", "")
-					vim.fn.setreg("+", vim.fn.fnamemodify(filename, ":t:r"))
+					-- Copy the word under cursor, get the basename (remove extensions)
+					vim.fn.setreg("+", vim.fn.fnamemodify(require("oil").get_cursor_entry().name, ":t:r"))
 				end,
 			},
 			["<leader>cc"] = {
 				desc = "[C]opy file path",
 				callback = function()
-					-- Get cwd and remove trailing "/"
-					local current_dir = require("oil").get_current_dir()
-					local filename = vim.fn.expand("<cWORD>"):gsub("/+$", "")
-					vim.fn.setreg("+", current_dir .. filename)
+					local oil = require("oil")
+					vim.fn.setreg("+", oil.get_current_dir() .. oil.get_cursor_entry().name)
 				end,
 			},
 		},
