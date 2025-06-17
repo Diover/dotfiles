@@ -26,6 +26,7 @@ return {
 			-- For major updates, this must be adjusted manually.
 			version = "^1.1.0",
 		},
+		"jsongerber/telescope-ssh-config",
 	},
 	config = function()
 		local lga_actions = require("telescope-live-grep-args.actions")
@@ -89,12 +90,17 @@ return {
 						},
 					},
 				},
+				["ssh-config"] = {
+					client = "oil", -- or 'netrw'
+					ssh_config_path = "~/.ssh/config",
+				},
 			},
 		})
 		-- Enable Telescope extensions if they are installed
 		pcall(require("telescope").load_extension, "fzf")
 		pcall(require("telescope").load_extension, "ui-select")
 		pcall(require("telescope").load_extension, "live_grep_args")
+		pcall(require("telescope").load_extension, "ssh-config")
 
 		-- See `:help telescope.builtin`
 		local builtin = require("telescope.builtin")
@@ -118,11 +124,7 @@ return {
 		vim.keymap.set("n", "<leader><leader>", live_grep_args.live_grep_args, { desc = "[ ] Search by live grep" })
 		vim.keymap.set("n", "<leader>sf", builtin.find_files, { desc = "[S]earch [F]iles" })
 
-		-- Shortcut for searching your Neovim configuration files
-		vim.keymap.set("n", "<leader>sc", function()
-			builtin.find_files({ cwd = vim.fn.stdpath("config") })
-		end, { desc = "[S]earch neovim [C]onfig files" })
-
+		-- Git searches
 		vim.keymap.set("n", "<leader>sgf", builtin.git_files, { desc = "[S]earch [G]it [F]iles" })
 		vim.keymap.set("n", "<leader>sgs", builtin.git_status, { desc = "[S]earch [G]it [S]tatus" })
 		vim.keymap.set("n", "<leader>sgc", builtin.git_commits, { desc = "[S]earch [G]it [C]ommits" })
@@ -140,14 +142,15 @@ return {
 			{ desc = "[S]earch [G]it commits for current line selection in current b[U]ffer" }
 		)
 
+		-- Diagnostics and notifications
 		vim.keymap.set("n", "<leader>sd", builtin.diagnostics, { desc = "[S]earch [D]iagnostics" })
 		vim.keymap.set("n", "<leader>st", "<Cmd>Telescope notify<CR>", { desc = "[S]earch no[T]ification messages" })
 
+		-- Resume and misc
 		vim.keymap.set("n", "<leader>sr", builtin.resume, { desc = "[S]earch [R]esume" })
 		vim.keymap.set("n", "<leader>s.", builtin.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
 		vim.keymap.set("n", "<leader>sb", builtin.buffers, { desc = "[S]earch existing [B]uffers" })
 
-		-- Slightly advanced example of overriding default behavior and theme
 		vim.keymap.set("n", "<leader>/", function()
 			-- You can pass additional configuration to Telescope to change the theme, layout, etc.
 			builtin.current_buffer_fuzzy_find(require("telescope.themes").get_dropdown({
@@ -157,12 +160,14 @@ return {
 		end, { desc = "[/] Fuzzily search in current buffer" })
 
 		-- It's also possible to pass additional configuration options.
-		--  See `:help telescope.builtin.live_grep()` for information about particular keys
 		vim.keymap.set("n", "<leader>s/", function()
 			live_grep_args.live_grep_args({
 				grep_open_files = true,
 				prompt_title = "Live Grep in Open Files",
 			})
 		end, { desc = "[S]earch [/] in Open Files" })
+
+		-- Open ssh connection to a host in Oil.nvim
+		vim.keymap.set("n", "<leader>sc", "<cmd>Telescope ssh-config<CR>", { desc = "Open an ssh connection" })
 	end,
 }
