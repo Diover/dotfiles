@@ -108,11 +108,10 @@ vim.keymap.set("n", "yY", "mzggyG`z")
 -- vim.keymap.set("n", "H", "mzkJ`z")
 
 -- Go to start/end of line
-vim.keymap.set("n", "L", "$")
-vim.keymap.set("n", "H", "^")
+vim.keymap.set({ "n", "v" }, "L", "$")
+vim.keymap.set({ "n", "v" }, "H", "^")
 -- Remove the lines, but keep the cursor at the same position
 vim.keymap.set("n", "J", "mzjdd`z")
-vim.keymap.set("n", "K", "mzkdd`z")
 
 -- Enter empty lines
 vim.keymap.set("n", "<leader>O", "mzO<Esc>`z", { desc = "New line above" })
