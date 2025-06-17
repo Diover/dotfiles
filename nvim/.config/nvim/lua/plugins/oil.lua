@@ -5,6 +5,9 @@ return {
 	opts = {
 		default_file_explorer = true,
 		delete_to_trash = true,
+		win_options = {
+			winbar = "%{v:lua.require('oil').get_current_dir()}",
+		},
 		skip_confirm_for_simple_edits = true,
 		lsp_file_methods = {
 			-- Set to true to autosave buffers that are updated with LSP willRenameFiles
