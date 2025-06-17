@@ -90,6 +90,8 @@ vim.api.nvim_create_autocmd({ "FileType" }, {
 vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>")
 -- Diagnostic keymaps
 vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Open diagnostic [Q]uickfix list" })
+vim.keymap.set("n", "<leader>en", "<cmd>lua vim.diagnostic.goto_next()<cr>", { desc = "[Errors] Go to [N]ext error" })
+vim.keymap.set("n", "<leader>ep", "<cmd>lua vim.diagnostic.goto_prev()<cr>", { desc = "[Errors] Go to [P]rev error" })
 
 -- Selection movement
 vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
@@ -97,16 +99,24 @@ vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
 vim.keymap.set("v", "<", "<gv")
 vim.keymap.set("v", ">", ">gv")
 
--- Remove the line below, but keep the cursor at the same position
-vim.keymap.set("n", "J", "mzJ`z")
+-- Yank all, but the cursor at the same position
+vim.keymap.set("n", "yY", "mzggyG`z")
+
+-- Join the lines, but keep the cursor at the same position
+-- Not super useful at the moment
+-- vim.keymap.set("n", "L", "mzJ`z")
+-- vim.keymap.set("n", "H", "mzkJ`z")
+
+-- Go to start/end of line
+vim.keymap.set("n", "L", "$")
+vim.keymap.set("n", "H", "^")
+-- Remove the lines, but keep the cursor at the same position
+vim.keymap.set("n", "J", "mzjdd`z")
+vim.keymap.set("n", "K", "mzkdd`z")
 
 -- Enter empty lines
--- vim.keymap.set("n", "<CR>", '@="m`o<C-V><Esc>``"<CR>')
--- vim.keymap.set("n", "<S-CR>", '@="m`O<C-V><Esc>``"<CR>')
--- vim.keymap.set("n", "<CR>", "<Cmd>call append(line('.') - 1, repeat([''], v:count1))<CR>")
--- vim.keymap.set("n", "<S-CR>", "<Cmd>call append(line('.'),     repeat([''], v:count1))<CR>")
-vim.keymap.set("n", "_", "mzO<Esc>`z", { desc = "add blank line above" })
-vim.keymap.set("n", "<CR>", "mzo<Esc>`z", { desc = "add blank line below" })
+vim.keymap.set("n", "<leader>O", "mzO<Esc>`z", { desc = "New line above" })
+vim.keymap.set("n", "<leader>o", "mzo<Esc>`z", { desc = "New line below" })
 
 -- Center after scrolling and search
 vim.keymap.set("n", "<C-d>", "<C-d>zz")
@@ -148,7 +158,7 @@ vim.keymap.set("v", "<leader>d", '"_d')
 -- Delete current buffer
 vim.keymap.set("n", "<leader>bd", ":bd<CR>")
 -- Search and replace word under the cursor
-vim.keymap.set("n", "<leader>r", [[:%s/\<<C-r><C-w>\>//g<Left><Left>]])
+vim.keymap.set("n", "<qeader>r", [[:%s/\<<C-r><C-w>\>//g<Left><Left>]])
 
 vim.keymap.set("n", "Q", "<nop>")
 
