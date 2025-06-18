@@ -102,7 +102,7 @@ return {
 				map("gD", "<CMD>Glance definitions<CR>", "Glance [G]oto [D]efinition")
 				map("gR", "<CMD>Glance references<CR>", "Glance [G]oto [R]eferences")
 				map("gY", "<CMD>Glance type_definitions<CR>", "Glance [G]oto t[Y]pe definitions")
-				map("gM", "<CMD>Glance implementations<CR>", "Glance [G]oto [I]mplementations")
+				map("gI", "<CMD>Glance implementations<CR>", "Glance [G]oto [I]mplementations")
 
 				-- WARN: This is not Goto Definition, this is Goto Declaration.
 				--  For example, in C this would take you to the header.
@@ -279,6 +279,7 @@ return {
 
 		require("mason-lspconfig").setup({
 			ensure_installed = {}, -- explicitly set to an empty table (Kickstart populates installs via mason-tool-installer)
+			automatic_enable = true,
 			automatic_installation = false,
 			handlers = {
 				function(server_name)
