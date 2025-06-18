@@ -26,7 +26,6 @@ return {
 			-- For major updates, this must be adjusted manually.
 			version = "^1.1.0",
 		},
-		"jsongerber/telescope-ssh-config",
 	},
 	config = function()
 		local lga_actions = require("telescope-live-grep-args.actions")
@@ -90,17 +89,12 @@ return {
 						},
 					},
 				},
-				["ssh-config"] = {
-					client = "oil", -- or 'netrw'
-					ssh_config_path = "~/.ssh/config",
-				},
 			},
 		})
 		-- Enable Telescope extensions if they are installed
 		pcall(require("telescope").load_extension, "fzf")
 		pcall(require("telescope").load_extension, "ui-select")
 		pcall(require("telescope").load_extension, "live_grep_args")
-		pcall(require("telescope").load_extension, "ssh-config")
 
 		-- See `:help telescope.builtin`
 		local builtin = require("telescope.builtin")
@@ -166,8 +160,5 @@ return {
 				prompt_title = "Live Grep in Open Files",
 			})
 		end, { desc = "[S]earch [/] in Open Files" })
-
-		-- Open ssh connection to a host in Oil.nvim
-		vim.keymap.set("n", "<leader>sc", "<cmd>Telescope ssh-config<CR>", { desc = "Open an ssh connection" })
 	end,
 }
