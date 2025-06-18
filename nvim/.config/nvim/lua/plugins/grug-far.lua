@@ -1,3 +1,10 @@
+local function get_default_unless_from_oil(default)
+	if vim.bo.filetype == "oil" then
+		return nil
+	end
+	return default
+end
+
 local function get_cwd_from_oil_or_default(default)
 	if vim.bo.filetype == "oil" then
 		local oil = require("oil")
@@ -43,7 +50,12 @@ return {
 			"<leader>sr",
 			function()
 				local grug = require("grug-far")
-				grug.open({ prefills = { paths = get_cwd_from_oil_or_default(vim.fn.expand("%")) } })
+				grug.open({
+					prefills = {
+						paths = get_cwd_from_oil_or_default(vim.fn.expand("%")),
+						search = get_default_unless_from_oil(vim.fn.expand("<cword>")),
+					},
+				})
 			end,
 			mode = { "n", "v" },
 			desc = "Grug-far: [S]earch and [r]eplace in current file",
@@ -52,7 +64,12 @@ return {
 			"<leader>sR",
 			function()
 				local grug = require("grug-far")
-				grug.open({ prefills = { paths = get_cwd_from_oil_or_default(nil) } })
+				grug.open({
+					prefills = {
+						paths = get_cwd_from_oil_or_default(nil),
+						search = get_default_unless_from_oil(vim.fn.expand("<cword>")),
+					},
+				})
 			end,
 			mode = { "n", "v" },
 			desc = "Grug-far: [S]earch and [R]eplace in all files",
