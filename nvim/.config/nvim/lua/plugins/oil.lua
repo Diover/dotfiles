@@ -8,6 +8,7 @@ return {
 		delete_to_trash = true,
 		win_options = {
 			winbar = "%{v:lua.require('oil').get_current_dir()}",
+			signcolumn = "yes:2",
 		},
 		view_options = {
 			show_hidden = true,

@@ -56,6 +56,12 @@ return {
 		)
 		vim.keymap.set(
 			"n",
+			"<leader>ghu",
+			"<Cmd>DiffviewOpen @{u}...HEAD <CR>",
+			{ desc = "[G]it [H]istory diff against [U]pstream" }
+		)
+		vim.keymap.set(
+			"n",
 			"<leader>ghs",
 			"<cmd>DiffviewFileHistory -g --range=stash<CR>",
 			{ desc = "[G]it [H]istory [S]tashes" }
