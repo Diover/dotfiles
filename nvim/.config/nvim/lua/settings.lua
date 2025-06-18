@@ -63,25 +63,26 @@ vim.opt.fillchars = vim.opt.fillchars + "diff: "
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
 
+local dotfiles_augroup = vim.api.nvim_create_augroup("dotfiles-settings", { clear = true })
 -- Highlight when yanking (copying) text
---  Try it with `yap` in normal mode
 --  See `:help vim.hl.on_yank()`
 vim.api.nvim_create_autocmd("TextYankPost", {
 	desc = "Highlight when yanking (copying) text",
-	group = vim.api.nvim_create_augroup("kickstart-highlight-yank", { clear = true }),
+	group = dotfiles_augroup,
 	callback = function()
 		vim.hl.on_yank()
 	end,
 })
-
+-- Close following buffer types with 'q'
 vim.api.nvim_create_autocmd({ "FileType" }, {
-	group = vim.api.nvim_create_augroup("userconfig-close-help", { clear = true }),
-	desc = "keymap 'q' to close help/quickfix/netrw/etc windows",
+	group = dotfiles_augroup,
+	desc = "Add keymap 'q' to close help/quickfix/netrw/etc windows",
 	pattern = "help,startuptime,qf,lspinfo,man,checkhealth,gitsigns-blame,undotree",
 	callback = function()
 		vim.keymap.set("n", "q", "<C-w>c", { buffer = true, desc = "Quit (or Close) help, quickfix, etc windows" })
 	end,
 })
+
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
 
