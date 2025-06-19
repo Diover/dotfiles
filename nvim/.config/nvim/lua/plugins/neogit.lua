@@ -43,6 +43,7 @@ return {
 		vim.keymap.set("n", "<leader>gt", "<cmd>Neogit tag<CR>")
 		vim.keymap.set("n", "<leader>gr", "<cmd>Neogit rebase<CR>")
 		vim.keymap.set("n", "<leader>gv", "<cmd>Neogit revert<CR>")
+		vim.keymap.set("n", "<leader>gm", "<cmd>Neogit merge<CR>")
 
 		-- Git History, Stashes, Deeper diffs
 		local which_key = require("which-key")
