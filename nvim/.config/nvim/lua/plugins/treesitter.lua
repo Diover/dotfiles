@@ -11,12 +11,12 @@ return {
 			-- A list of parser names, or "all"
 			ensure_installed = {
 				"lua",
-				"markdown",
 				"luadoc",
+				"markdown",
+				"markdown_inline",
 				"html",
 				"diff",
 				"vim",
-				"markdown_inline",
 				"query",
 				"vimdoc",
 				"javascript",
