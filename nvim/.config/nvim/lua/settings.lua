@@ -77,7 +77,7 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 vim.api.nvim_create_autocmd({ "FileType" }, {
 	group = dotfiles_augroup,
 	desc = "Add keymap 'q' to close help/quickfix/netrw/etc windows",
-	pattern = "help,startuptime,qf,lspinfo,man,checkhealth,gitsigns-blame,undotree,grug-far",
+	pattern = "help,startuptime,qf,lspinfo,man,checkhealth,gitsigns-blame,undotree,grug-far,toggleterm",
 	callback = function()
 		vim.keymap.set("n", "q", "<C-w>c", { buffer = true, desc = "Quit (or Close) help, quickfix, etc windows" })
 	end,
@@ -101,9 +101,10 @@ vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
 vim.keymap.set("v", "<", "<gv")
 vim.keymap.set("v", ">", ">gv")
 
--- Yank all, but the cursor at the same position
-vim.keymap.set("n", "yY", "mzggyG`z")
-
+-- Yank all, but keep the cursor at the same position
+vim.keymap.set("n", "yY", "mzggyG`z", { desc = "Yank All" })
+vim.keymap.set("n", "<leader>pa", "mzggVGp`z", { desc = "Select all and paste" })
+vim.keymap.set("n", "vV", "ggVG", { desc = "select all" })
 -- Join the lines, but keep the cursor at the same position
 -- Not super useful at the moment
 -- vim.keymap.set("n", "L", "mzJ`z")
@@ -147,19 +148,15 @@ vim.keymap.set("t", "<C-Left>", "<cmd>vertical resize -15<CR>")
 vim.keymap.set("t", "<C-Right>", "<cmd>vertical resize +15<CR>")
 
 -- Paste without losing the buffer
-vim.keymap.set("n", "<leader>p", '"_dP')
 vim.keymap.set("i", "<C-p>", "<Esc>p", { desc = "Paste buffer (insert mode), exit to normal mode" })
-vim.keymap.set("n", "<leader>y", '"+y')
-vim.keymap.set("v", "<leader>y", '"+y')
+vim.keymap.set({ "n", "v" }, "<leader>y", '"+y')
 vim.keymap.set("n", "<leader>Y", '"+Y')
-
-vim.keymap.set("n", "<leader>d", '"_d')
-vim.keymap.set("v", "<leader>d", '"_d')
+vim.keymap.set({ "n", "v" }, "<leader>d", '"_d')
 
 -- Delete current buffer
 vim.keymap.set("n", "<leader>bd", ":bd<CR>")
 -- Search and replace word under the cursor
-vim.keymap.set("n", "<qeader>r", [[:%s/\<<C-r><C-w>\>//g<Left><Left>]])
+vim.keymap.set("n", "<leader>r", [[:%s/\<<C-r><C-w>\>//g<Left><Left>]])
 
 vim.keymap.set("n", "Q", "<nop>")
 

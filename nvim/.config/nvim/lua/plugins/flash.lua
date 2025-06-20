@@ -18,20 +18,20 @@ return {
 	},
 	keys = {
 		{
-			"x",
+			"sx",
 			mode = { "n", "x", "o" },
 			function()
 				require("flash").jump()
 			end,
-			desc = "Flash: jump to [x] target",
+			desc = "Flash: [S]earch and jump to [x] target",
 		},
 		{
-			"X",
+			"sX",
 			mode = { "n", "x", "o" },
 			function()
 				require("flash").treesitter()
 			end,
-			desc = "Flash: Treesitter jump to [X] target",
+			desc = "Flash: Treesitter [S]earch and jump to [X] target",
 		},
 		{
 			"r",
