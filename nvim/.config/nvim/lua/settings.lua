@@ -87,7 +87,8 @@ vim.api.nvim_create_autocmd({ "FileType" }, {
 --  See `:help vim.keymap.set()`
 
 -- Clear highlights on search when pressing <Esc> in normal mode
---  See `:help hlsearch`
+-- See `:help hlsearch`
+-- Another way could help when <cmd> doesn't work: ":let v:hlsearch = 1 - v:hlsearch<CR>"
 vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>")
 -- Diagnostic keymaps
 vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Open diagnostic [Q]uickfix list" })
