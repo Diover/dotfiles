@@ -23,7 +23,12 @@ return {
 						load_breakpoints_event = { "BufReadPost" },
 					})
 
-					vim.keymap.set("n", "<leader>db", ":PBToggleBreakpoint<CR>", { desc = "[DAP] Toggle breakpoint" })
+					vim.keymap.set(
+						"n",
+						"<leader>db",
+						":PBToggleBreakpoint<CR>",
+						{ desc = "[D]ebug toggle [B]reakpoint" }
+					)
 				end,
 			},
 			{
@@ -70,50 +75,50 @@ return {
 			},
 		},
 		config = function()
-			vim.keymap.set("n", "<leader>dR", "<cmd>lua require'dap'.run()<cr>", { desc = "[DAP] Run" })
-			vim.keymap.set("n", "<leader>de", "<cmd>lua require'dap'.run_last()<cr>", { desc = "[DAP] Debug last" })
+			vim.keymap.set("n", "<leader>dr", "<cmd>lua require'dap'.run()<cr>", { desc = "[D]ebug [R]un" })
+			vim.keymap.set("n", "<leader>dR", "<cmd>lua require'dap'.run_last()<cr>", { desc = "[D]ebug [R]un last" })
 			vim.keymap.set(
 				"n",
 				"<leader>dE",
 				"<cmd>Telescope dap configurations<cr>",
-				{ desc = "[DAP] Show debug configurations" }
+				{ desc = "Show d[E]bug configurations via Telescope" }
 			)
-			vim.keymap.set("n", "<leader>dk", "<cmd>DapTerminate<cr>", { desc = "[DAP] Terminate" })
-			-- vim.keymap.set("n", "<leader>db", "<cmd>DapToggleBreakpoint<cr>",  {desc = "[DAP] Toggle breakpoint" })
+			vim.keymap.set("n", "<leader>dq", "<cmd>DapTerminate<cr>", { desc = "[D]ebug Terminate" })
+			-- vim.keymap.set("n", "<leader>db", "<cmd>DapToggleBreakpoint<cr>",  {desc = "Toggle breakpoint" })
 			vim.keymap.set(
 				"n",
 				"<leader>dB",
 				"<cmd>lua require'dap'.set_breakpoint(vim.fn.input('Breakpoint condition: '))<cr>",
-				{ desc = "[DAP] Set conditional breakpoint" }
+				{ desc = "[D]ebug set conditional [B]reakpoint" }
 			)
-			vim.keymap.set(
-				"n",
-				"<leader>dl",
-				"<cmd>lua require'dap'.set_breakpoint(nil, nil, vim.fn.input('Log point message: '))<cr>",
-				{ desc = "[DAP] Set log point breakpoint" }
-			)
-			vim.keymap.set("n", "<leader>dc", "<cmd>DapContinue<cr>", { desc = "[DAP] Continue" })
-			vim.keymap.set("n", "<leader>dv", "<cmd>DapStepOver<cr>", { desc = "[DAP] Step oVer" })
-			vim.keymap.set("n", "<leader>di", "<cmd>DapStepInto<cr>", { desc = "[DAP] Step Into" })
-			vim.keymap.set("n", "<leader>do", "<cmd>DapStepOut<cr>", { desc = "[DAP] Step Out" })
-			vim.keymap.set("n", "<leader>dp", "<cmd>DapToggleRepl<cr>", { desc = "[DAP] Repl open" })
+			-- vim.keymap.set(
+			-- 	"n",
+			-- 	"<leader>dl",
+			-- 	"<cmd>lua require'dap'.set_breakpoint(nil, nil, vim.fn.input('Log point message: '))<cr>",
+			-- 	{ desc = "Set log point breakpoint" }
+			-- )
+			vim.keymap.set("n", "<leader>dc", "<cmd>DapContinue<cr>", { desc = "[D]ebug [C]ontinue" })
+			vim.keymap.set("n", "<leader>dj", "<cmd>DapStepOver<cr>", { desc = "[D]ebug step over (Down)" })
+			vim.keymap.set("n", "<leader>dl", "<cmd>DapStepInto<cr>", { desc = "[D]ebug step into (Right)" })
+			vim.keymap.set("n", "<leader>dk", "<cmd>DapStepOut<cr>", { desc = "[D]ebug step out (Up)" })
+			vim.keymap.set("n", "<leader>dp", "<cmd>DapToggleRepl<cr>", { desc = "[D]ebug re[P]l open" })
 			vim.keymap.set(
 				"n",
 				"<leader>du",
 				"<cmd>lua require'dap-view'.toggle()<cr>",
-				{ desc = "[DAPUI] Toggle debugging UI" }
+				{ desc = "[D]ebug toggle debugging [U]I" }
 			)
 			vim.keymap.set(
 				"n",
 				"<leader>ds",
 				"<cmd>Telescope dap list_breakpoints<cr>",
-				{ desc = "[TELESCOPE DAP] Show all breakpoints" }
+				{ desc = "[D]ebug [s]how all breakpoints via Telescope" }
 			)
 			vim.keymap.set(
 				"n",
-				"<leader>dw",
+				"<leader>dv",
 				"<cmd>Telescope dap variables<cr>",
-				{ desc = "[TELESCOPE DAP] Variables" }
+				{ desc = "[D]ebug show all [V]ariables via Telescope" }
 			)
 		end,
 		-- lazy = true,
