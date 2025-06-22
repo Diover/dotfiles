@@ -37,7 +37,9 @@ vim.g.have_nerd_font = true
 vim.opt.scrolloff = 10
 
 -- Sync clipboard between OS and Neovim
-vim.opt.clipboard = "unnamedplus"
+vim.schedule(function()
+	vim.opt.clipboard = "unnamedplus"
+end)
 -- faster completion
 vim.opt.updatetime = 50
 

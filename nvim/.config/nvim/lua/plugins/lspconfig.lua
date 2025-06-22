@@ -99,10 +99,10 @@ return {
 				--  To jump back, press <C-t>.
 				map("grd", require("telescope.builtin").lsp_definitions, "[G]oto [D]efinition")
 
-				map("gD", "<CMD>Glance definitions<CR>", "Glance [G]oto [D]efinition")
-				map("gR", "<CMD>Glance references<CR>", "Glance [G]oto [R]eferences")
-				map("gY", "<CMD>Glance type_definitions<CR>", "Glance [G]oto t[Y]pe definitions")
-				map("gI", "<CMD>Glance implementations<CR>", "Glance [G]oto [I]mplementations")
+				map("gD", "<cmd>Glance definitions<CR>", "Glance [G]oto [D]efinition")
+				map("gR", "<cmd>Glance references<CR>", "Glance [G]oto [R]eferences")
+				map("gY", "<cmd>Glance type_definitions<CR>", "Glance [G]oto t[Y]pe definitions")
+				map("gI", "<cmd>Glance implementations<CR>", "Glance [G]oto [I]mplementations")
 
 				-- WARN: This is not Goto Definition, this is Goto Declaration.
 				--  For example, in C this would take you to the header.
@@ -127,13 +127,12 @@ return {
 				---@param bufnr? integer some lsp support methods only in specific files
 				---@return boolean
 				local function client_supports_method(client, method, bufnr)
-					if vim.fn.has("nvim-0.11") == 1 then
-						return client:supports_method(method, bufnr)
-					else
-						return client.supports_method(method, { bufnr = bufnr })
-					end
+					return client:supports_method(method, bufnr)
 				end
 
+				map("<leader>th", function()
+					vim.diagnostic.enable(not vim.diagnostic.is_enabled())
+				end, "[T]oggle Diagnostic [H]ints")
 				-- The following two autocommands are used to highlight references of the
 				-- word under your cursor when your cursor rests there for a little while.
 				--    See `:help CursorHold` for information about when this is executed
@@ -174,17 +173,16 @@ return {
 				-- code, if the language server you are using supports them
 				--
 				-- This may be unwanted, since they displace some of your code
-				if
-					client
-					and client_supports_method(client, vim.lsp.protocol.Methods.textDocument_inlayHint, event.buf)
-				then
-					map("<leader>th", function()
-						vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = event.buf }))
-					end, "[T]oggle Inlay [H]ints")
-				end
+				-- if
+				-- 	client
+				-- 	and client_supports_method(client, vim.lsp.protocol.Methods.textDocument_inlayHint, event.buf)
+				-- then
+				-- 	map("<leader>th", function()
+				-- 		vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = event.buf }))
+				-- 	end, "[T]oggle Inlay [H]ints")
+				-- end
 			end,
 		})
-
 		-- Diagnostic Config
 		-- See :help vim.diagnostic.Opts
 		vim.diagnostic.config({
@@ -232,7 +230,29 @@ return {
 		local servers = {
 			-- clangd = {},
 			-- gopls = {},
-			pyright = {},
+			pyright = {
+				cmd = { "pyright-langserver", "--stdio" },
+				filetypes = { "python" },
+				root_markers = {
+					".conda",
+					"pyproject.toml",
+					"setup.py",
+					"setup.cfg",
+					"requirements.txt",
+					"Pipfile",
+					"pyrightconfig.json",
+					".git",
+				},
+				settings = {
+					python = {
+						analysis = {
+							autoSearchPaths = true,
+							useLibraryCodeForTypes = true,
+							diagnosticMode = "openFilesOnly",
+						},
+					},
+				},
+			},
 			rust_analyzer = {},
 			-- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
 			--
