@@ -150,15 +150,17 @@ vim.keymap.set("t", "<C-Left>", "<cmd>vertical resize -15<CR>")
 vim.keymap.set("t", "<C-Right>", "<cmd>vertical resize +15<CR>")
 
 -- Paste without losing the buffer
-vim.keymap.set("i", "<C-p>", "<Esc>p", { desc = "Paste buffer (insert mode), exit to normal mode" })
-vim.keymap.set({ "n", "v" }, "<leader>y", '"+y')
-vim.keymap.set("n", "<leader>Y", '"+Y')
-vim.keymap.set({ "n", "v" }, "<leader>d", '"_d')
+vim.keymap.set("i", "<C-p>", "<Esc>p", { desc = "[P]aste buffer (insert mode), exit to normal mode" })
 
 -- Delete current buffer
-vim.keymap.set("n", "<leader>bd", ":bd<CR>")
+vim.keymap.set("n", "<leader>bd", ":bd<CR>", { desc = "[B]uffer [D]elete" })
 -- Search and replace word under the cursor
-vim.keymap.set("n", "<leader>r", [[:%s/\<<C-r><C-w>\>//g<Left><Left>]])
+vim.keymap.set(
+	"n",
+	"<leader>r",
+	[[:%s/\<<C-r><C-w>\>//g<Left><Left>]],
+	{ desc = "[R]eplace word under cursor in the current buffer" }
+)
 
 vim.keymap.set("n", "Q", "<nop>")
 
@@ -167,8 +169,11 @@ vim.keymap.set("n", "Q", "<nop>")
 -- vim.keymap.set("c", "w!!", "w !sudo tee > /dev/null %", { silent = true, desc = "Write as Sudo" })
 
 --Save without formatting
-vim.keymap.set("n", "<leader>wf", ":noautocmd w<CR>", { desc = "Save without [F]ormatting" })
+vim.keymap.set("n", "<leader>wf", ":noautocmd w<CR>", { desc = "[W]rite without [F]ormatting" })
 
 -- Open file explorer
-vim.keymap.set("n", "<leader>pv", "<cmd>Oil<cr>")
-vim.keymap.set("n", "-", "<cmd>Oil<cr>")
+vim.keymap.set("n", "<leader>pv", "<cmd>Oil<cr>", { desc = "Open file explorer in the current directory" })
+vim.keymap.set("n", "-", "<cmd>Oil<cr>", { desc = "Open file explorer in the current directory [-]" })
+vim.keymap.set("n", "_", function()
+	require("oil.actions").open_cwd.callback()
+end, { desc = "Open file explorer in cwd [_]" })
