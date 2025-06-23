@@ -6,6 +6,6 @@ return {
 			width = 0.9,
 			position = "center",
 		})
-		vim.keymap.set("n", "<leader>td", ":Td<CR>", { silent = true })
+		vim.keymap.set("n", "<leader>tD", ":Td<CR>", { silent = true })
 	end,
 }

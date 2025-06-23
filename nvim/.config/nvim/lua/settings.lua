@@ -79,7 +79,7 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 vim.api.nvim_create_autocmd({ "FileType" }, {
 	group = dotfiles_augroup,
 	desc = "Add keymap 'q' to close help/quickfix/netrw/etc windows",
-	pattern = "help,startuptime,qf,lspinfo,man,checkhealth,gitsigns-blame,undotree,grug-far,toggleterm",
+	pattern = "help,startuptime,qf,lspinfo,man,checkhealth,gitsigns-blame,undotree,grug-far,toggleterm,notify",
 	callback = function()
 		vim.keymap.set("n", "q", "<C-w>c", { buffer = true, desc = "Quit (or Close) help, quickfix, etc windows" })
 	end,
@@ -94,8 +94,8 @@ vim.api.nvim_create_autocmd({ "FileType" }, {
 vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>")
 -- Diagnostic keymaps
 vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Open diagnostic [Q]uickfix list" })
-vim.keymap.set("n", "<leader>en", "<cmd>lua vim.diagnostic.goto_next()<cr>", { desc = "[Errors] Go to [N]ext error" })
-vim.keymap.set("n", "<leader>ep", "<cmd>lua vim.diagnostic.goto_prev()<cr>", { desc = "[Errors] Go to [P]rev error" })
+vim.keymap.set("n", "<leader>]", "<cmd>lua vim.diagnostic.goto_next()<cr>", { desc = "[Errors] Go to [N]ext error" })
+vim.keymap.set("n", "<leader>[", "<cmd>lua vim.diagnostic.goto_prev()<cr>", { desc = "[Errors] Go to [P]rev error" })
 
 -- Selection movement
 vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")

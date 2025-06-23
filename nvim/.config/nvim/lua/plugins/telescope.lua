@@ -10,6 +10,7 @@ return {
 			end,
 		},
 		{ "nvim-telescope/telescope-ui-select.nvim" },
+		{ "nvim-telescope/telescope-dap.nvim" },
 		{
 			"nvim-tree/nvim-web-devicons",
 			enabled = vim.g.have_nerd_font,
@@ -89,12 +90,14 @@ return {
 						},
 					},
 				},
+				dap = {},
 			},
 		})
 		-- Enable Telescope extensions if they are installed
 		pcall(require("telescope").load_extension, "fzf")
 		pcall(require("telescope").load_extension, "ui-select")
 		pcall(require("telescope").load_extension, "live_grep_args")
+		pcall(require("telescope").load_extension, "dap")
 
 		-- See `:help telescope.builtin`
 		local builtin = require("telescope.builtin")
