@@ -87,6 +87,9 @@ return {
 				root_markers = {
 					{
 						".conda",
+						".venv",
+					},
+					{
 						"pyproject.toml",
 						"setup.py",
 						"setup.cfg",
