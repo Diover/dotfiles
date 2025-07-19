@@ -197,11 +197,14 @@ if.app-name-regex-substring = "IntelliJ IDEA"
 run = "move-node-to-workspace 6"
 
 [[on-window-detected]]
+if.app-id = 'md.obsidian'
+run = "move-node-to-workspace 7"
+
+[[on-window-detected]]
 if.app-name-regex-substring = 'finder'
 run = "layout floating"
 
 [[on-window-detected]]
 if.app-id = 'com.apple.ActivityMonitor'
 run = "move-node-to-workspace 0"
-
 
