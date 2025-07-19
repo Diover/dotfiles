@@ -16,16 +16,6 @@ return {
 		"nvim-telescope/telescope.nvim",
 	},
 	opts = {
-		workspaces = {
-			{
-				name = "personal",
-				path = "~/vaults/personal",
-			},
-			{
-				name = "work",
-				path = "~/vaults/work",
-			},
-		},
 		picker = {
 			-- Set your preferred picker. Can be one of 'telescope.nvim', 'fzf-lua', or 'mini.pick'.
 			name = "telescope.nvim",
@@ -60,7 +50,7 @@ return {
 		note_id_func = function(title)
 			-- Create note IDs in a Zettelkasten format with a timestamp and a suffix.
 			-- In this case a note with the title 'My new note' will be given an ID that looks
-			-- like '1657296016-my-new-note', and therefore the file name '1657296016-my-new-note.md'
+			-- like '20250718-202345-my-new-note', and therefore the file name '20250718-202345-my-new-note.md'
 			local suffix = ""
 			if title ~= nil then
 				-- If title is given, transform it into valid file name.
@@ -71,7 +61,7 @@ return {
 					suffix = suffix .. string.char(math.random(65, 90))
 				end
 			end
-			return tostring(os.time()) .. "-" .. suffix
+			return tostring(os.date("%Y%m%d-%H%M%S")) .. "-" .. suffix
 		end,
 		attachments = {
 			-- The default folder to place images in via `:ObsidianPasteImg`.
@@ -116,20 +106,36 @@ return {
 			-- Open the URL in the default web browser.
 			vim.fn.jobstart({ "open", url }) -- Mac OS
 		end,
-
 		ui = {
 			enable = false,
-			checkboxes = {
-				["x"] = { char = "󰱒", hl_group = "ObsidianDone" },
-			},
 		},
 	},
 	config = function(_, opts)
-		require("obsidian").setup(opts)
-		-- vim.keymap.set({ "n" }, "<leader>nn", function()
-		-- 	local input = vim.fn.input({ prompt = "New Note Title" })
-		-- 	vim.cmd("Obsidian new '" .. input .. "'")
-		-- end, { noremap = true, silent = true })
+		local workspaces = {}
+		local vaults_config_path = vim.fn.expand("$HOME/.vaults")
+
+		if vim.fn.filereadable(vaults_config_path) == 1 then
+			for line in io.lines(vaults_config_path) do
+				local splits = vim.split(line, ":")
+				table.insert(workspaces, {
+					name = splits[1],
+					path = vim.fn.expand(splits[2]),
+				})
+			end
+		else
+			workspaces = {
+				{
+					name = "personal",
+					path = vim.env.HOME .. "/vaults/personal",
+				},
+			}
+		end
+
+		require("obsidian").setup(vim.tbl_extend("keep", opts, { workspaces = workspaces }))
+
+		-- This will ensure that changes to buffers are saved when you navigate away from that buffer, e.g. by following a link to another file
+		vim.api.nvim_create_autocmd("BufLeave", { pattern = "*.md", command = "silent! wall" })
+
 		vim.keymap.set({ "n", "v" }, "<leader>nn", "<cmd>Obsidian new<cr>", { noremap = true, silent = true })
 		vim.keymap.set({ "n", "v" }, "<leader>no", "<cmd>Obsidian open<cr>", { noremap = true, silent = true })
 		vim.keymap.set({ "n" }, "<leader>nq", "<cmd>Obsidian quick_switch<cr>", { noremap = true, silent = true })
@@ -164,8 +170,9 @@ return {
 			desc = "to link an inline visual selection of text to a note",
 		})
 
+		vim.keymap.set({ "n" }, "<leader>nd", "<cmd>Obsidian quick_switch todo<cr>", { noremap = true, silent = true })
+
 		-- Dailies
-		vim.keymap.set({ "n" }, "<leader>nd", "<cmd>Obsidian today<cr>", { noremap = true, silent = true })
 		vim.keymap.set({ "n" }, "<leader>nD", "<cmd>Obsidian dailies<cr>", { noremap = true, silent = true })
 		vim.keymap.set({ "n" }, "<leader>ny", "<cmd>Obsidian yesterday<cr>", { noremap = true, silent = true })
 		vim.keymap.set({ "n" }, "<leader>nY", "<cmd>Obsidian tomorrow<cr>", { noremap = true, silent = true })

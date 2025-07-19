@@ -1,6 +1,6 @@
-## Markdown reference for checking in neovim
+# Markdown reference for checking in neovim
 
-# Second Title
+## Second Title
 
 Here's a link, try to learn something: [link](https://google.com)
 
