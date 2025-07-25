@@ -136,48 +136,124 @@ return {
 		-- This will ensure that changes to buffers are saved when you navigate away from that buffer, e.g. by following a link to another file
 		vim.api.nvim_create_autocmd("BufLeave", { pattern = "*.md", command = "silent! wall" })
 
-		vim.keymap.set({ "n", "v" }, "<leader>nn", "<cmd>Obsidian new<cr>", { noremap = true, silent = true })
-		vim.keymap.set({ "n", "v" }, "<leader>no", "<cmd>Obsidian open<cr>", { noremap = true, silent = true })
-		vim.keymap.set({ "n" }, "<leader>nq", "<cmd>Obsidian quick_switch<cr>", { noremap = true, silent = true })
+		vim.keymap.set(
+			{ "n", "v" },
+			"<leader>nn",
+			"<cmd>Obsidian new<cr>",
+			{ noremap = true, silent = true, desc = "[N]otes: [N]ew note" }
+		)
+		vim.keymap.set(
+			{ "n", "v" },
+			"<leader>no",
+			"<cmd>Obsidian open<cr>",
+			{ noremap = true, silent = true, desc = "[N]otes: [O]pen note" }
+		)
+		vim.keymap.set(
+			{ "n", "v" },
+			"<leader>nr",
+			"<cmd>Obsidian rename<cr>",
+			{ noremap = true, silent = true, desc = "[N]otes: [R]ename this note with all backlinks" }
+		)
+		vim.keymap.set(
+			{ "n", "v" },
+			"<leader>nq",
+			"<cmd>Obsidian quick_switch<cr>",
+			{ noremap = true, silent = true, desc = "[N]otes: [Q]uick switch to another note" }
+		)
 
-		vim.keymap.set({ "n" }, "<leader>nb", "<cmd>Obsidian backlinks<cr>", { noremap = true, silent = true })
-		vim.keymap.set({ "n", "v" }, "<leader>nt", "<cmd>Obsidian tags<cr>", { noremap = true, silent = true })
-		vim.keymap.set({ "n" }, "<leader>ns", "<cmd>Obsidian search<cr>", { noremap = true, silent = true })
-		vim.keymap.set({ "n" }, "<leader>sn", "<cmd>Obsidian search<cr>", { noremap = true, silent = true })
+		vim.keymap.set(
+			{ "n" },
+			"<leader>nb",
+			"<cmd>Obsidian backlinks<cr>",
+			{ noremap = true, silent = true, desc = "[N]otes: Search all [B]acklinks" }
+		)
+		vim.keymap.set(
+			{ "n", "v" },
+			"<leader>nt",
+			"<cmd>Obsidian tags<cr>",
+			{ noremap = true, silent = true, desc = "[N]otes: Search and modify [T]ags" }
+		)
+		vim.keymap.set(
+			{ "n" },
+			"<leader>ns",
+			"<cmd>Obsidian search<cr>",
+			{ noremap = true, silent = true, desc = "[N]otes: [S]earch" }
+		)
+		vim.keymap.set(
+			{ "n" },
+			"<leader>sn",
+			"<cmd>Obsidian search<cr>",
+			{ noremap = true, silent = true, desc = "[S]earch [N]otes" }
+		)
 
-		vim.keymap.set({ "n" }, "<leader>nw", "<cmd>Obsidian workspace<cr>", { noremap = true, silent = true })
+		vim.keymap.set(
+			{ "n" },
+			"<leader>nw",
+			"<cmd>Obsidian workspace<cr>",
+			{ noremap = true, silent = true, desc = "[N]otes: Switch [W]orkspace folder" }
+		)
 
 		-- Link manipulation
 		vim.keymap.set({ "n", "v" }, "<leader>nle", "<cmd>Obsidian extract_note<cr>", {
 			noremap = true,
 			silent = true,
-			desc = "[E]xtract the visually selected text into a new note and link to it",
+			desc = "[N]ote [L]inks: [E]xtract text into a new note and link to it",
 		})
 		vim.keymap.set(
 			{ "n" },
 			"<leader>nls",
 			"<cmd>Obsidian links<cr>",
-			{ noremap = true, silent = true, desc = "Collect all links within the current buffer into a picker window" }
+			{ noremap = true, silent = true, desc = "[N]ote [L]inks: [S]earch all links in the current note" }
 		)
 		vim.keymap.set({ "n", "v" }, "<leader>nln", "<cmd>Obsidian link_new<cr>", {
 			noremap = true,
 			silent = true,
-			desc = "to create a new note and link it to an inline visual selection of text",
+			desc = "[N]ote [L]inks: Create [N]ew note and link it",
 		})
 		vim.keymap.set({ "n", "v" }, "<leader>nll", "<cmd>Obsidian link<cr>", {
 			noremap = true,
 			silent = true,
-			desc = "to link an inline visual selection of text to a note",
+			desc = "[N]ote [L]inks: Insert [L]ink to a note",
 		})
 
-		vim.keymap.set({ "n" }, "<leader>nd", "<cmd>Obsidian quick_switch todo<cr>", { noremap = true, silent = true })
+		vim.keymap.set(
+			{ "n" },
+			"<leader>nd",
+			"<cmd>Obsidian quick_switch todo<cr>",
+			{ noremap = true, silent = true, desc = "[N]otes: Open the [T]odo note" }
+		)
 
 		-- Dailies
-		vim.keymap.set({ "n" }, "<leader>nD", "<cmd>Obsidian dailies<cr>", { noremap = true, silent = true })
-		vim.keymap.set({ "n" }, "<leader>ny", "<cmd>Obsidian yesterday<cr>", { noremap = true, silent = true })
-		vim.keymap.set({ "n" }, "<leader>nY", "<cmd>Obsidian tomorrow<cr>", { noremap = true, silent = true })
+		vim.keymap.set(
+			{ "n" },
+			"<leader>nD",
+			"<cmd>Obsidian dailies<cr>",
+			{ noremap = true, silent = true, desc = "[N]otes: Create/Open [D]aily notes" }
+		)
+		vim.keymap.set(
+			{ "n" },
+			"<leader>ny",
+			"<cmd>Obsidian yesterday<cr>",
+			{ noremap = true, silent = true, desc = "[N]otes: [Y]esterday's daily note" }
+		)
+		vim.keymap.set(
+			{ "n" },
+			"<leader>nY",
+			"<cmd>Obsidian tomorrow<cr>",
+			{ noremap = true, silent = true, desc = "[N]otes: [T]omorrow's daily note" }
+		)
 
-		vim.keymap.set({ "n" }, "<leader>ni", "<cmd>Obsidian paste_img<cr>", { noremap = true, silent = true })
-		vim.keymap.set({ "n" }, "<leader>nc", "<cmd>Obsidian toc<cr>", { noremap = true, silent = true })
+		vim.keymap.set(
+			{ "n" },
+			"<leader>ni",
+			"<cmd>Obsidian paste_img<cr>",
+			{ noremap = true, silent = true, desc = "[N]otes: Paste [I]mage" }
+		)
+		vim.keymap.set(
+			{ "n" },
+			"<leader>nc",
+			"<cmd>Obsidian toc<cr>",
+			{ noremap = true, silent = true, desc = "[N]otes: Open table of [C]ontent" }
+		)
 	end,
 }
