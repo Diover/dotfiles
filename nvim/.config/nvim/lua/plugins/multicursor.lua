@@ -49,7 +49,7 @@ return {
 		-- Add a cursor for all matches of cursor word/selection in the document.
 		set(
 			{ "n", "x" },
-			"<leader>A",
+			"<localleader>a",
 			mc.matchAllAddCursors,
 			{ desc = "[A]dd cusrsors for all matches of word/selection" }
 		)
