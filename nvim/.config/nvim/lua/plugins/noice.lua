@@ -12,21 +12,32 @@ return {
 			},
 		},
 		presets = {
+			long_message_to_split = true,
 			lsp_doc_border = true,
 		},
 		views = {
 			mini = {
 				win_options = {
-					winblend = 0,
+					winblend = 100,
 				},
 			},
 		},
 		lsp = {
 			documentation = {
 				opts = {
-					win_options = { wrap = false },
+					win_options = { wrap = true },
 				},
 			},
+		},
+		routes = {
+			{ filter = { find = "E162" }, view = "mini" },
+			{ filter = { event = "msg_show", kind = "", find = "written" }, view = "mini" },
+			{ filter = { event = "msg_show", find = "search hit BOTTOM" }, skip = true },
+			{ filter = { event = "msg_show", find = "search hit TOP" }, skip = true },
+			{ filter = { event = "emsg", find = "E23" }, skip = true },
+			{ filter = { event = "emsg", find = "E20" }, skip = true },
+			{ filter = { find = "No signature help" }, skip = true },
+			{ filter = { find = "E37" }, skip = true },
 		},
 	},
 }
