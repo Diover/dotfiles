@@ -12,6 +12,11 @@ fi
 # vim mode: 
 # set -o vi
 
+# Edit current command line in vim mode
+autoload -U edit-command-line
+zle -N edit-command-line
+bindkey '√' edit-command-line # Option + v
+
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
 __conda_setup="$('/Users/ssmirnov/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
