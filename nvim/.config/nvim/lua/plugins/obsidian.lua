@@ -16,6 +16,7 @@ return {
 		"nvim-telescope/telescope.nvim",
 	},
 	opts = {
+		legacy_commands = false,
 		picker = {
 			-- Set your preferred picker. Can be one of 'telescope.nvim', 'fzf-lua', or 'mini.pick'.
 			name = "telescope.nvim",
@@ -67,30 +68,7 @@ return {
 			-- The default folder to place images in via `:ObsidianPasteImg`.
 			-- If this is a relative path it will be interpreted as relative to the vault root.
 			-- You can always override this per image by passing a full path to the command instead of just a filename.
-			img_folder = "assets/imgs", -- This is the default
-		},
-		mappings = {
-			-- Overrides the 'gf' mapping to work on markdown/wiki links within your vault.
-			["gf"] = {
-				action = function()
-					return require("obsidian").util.gf_passthrough()
-				end,
-				opts = { noremap = false, expr = true, buffer = true },
-			},
-			-- Toggle check-boxes.
-			["<leader>n."] = {
-				action = function()
-					return require("obsidian").util.toggle_checkbox()
-				end,
-				opts = { buffer = true },
-			},
-			-- Smart action depending on context, either follow link or toggle checkbox.
-			["<leader>n,"] = {
-				action = function()
-					return require("obsidian").util.smart_action()
-				end,
-				opts = { buffer = true, expr = true },
-			},
+			folder = "assets/imgs", -- This is the default
 		},
 		completion = {
 			-- Enables completion using nvim_cmp
@@ -102,10 +80,6 @@ return {
 			-- Set to false to disable new note creation in the picker
 			create_new = true,
 		},
-		follow_url_func = function(url)
-			-- Open the URL in the default web browser.
-			vim.fn.jobstart({ "open", url }) -- Mac OS
-		end,
 		ui = {
 			enable = false,
 		},
@@ -135,6 +109,18 @@ return {
 
 		-- This will ensure that changes to buffers are saved when you navigate away from that buffer, e.g. by following a link to another file
 		vim.api.nvim_create_autocmd("BufLeave", { pattern = "*.md", command = "silent! wall" })
+
+		-- Replaced mappings
+		-- vim.keymap.set({ "n" }, "gf", function()
+		-- 	return require("obsidian").util.gf_passthrough()
+		-- end, { noremap = true, silent = true, desc = "Open links in browser" })
+
+		vim.keymap.set(
+			{ "n", "v" },
+			"<leader>n.",
+			"<cmd>Obsidian toggle_checkbox<cr>",
+			{ noremap = true, silent = true, desc = "[N]otes: [.]Toggle Checkbox" }
+		)
 
 		vim.keymap.set(
 			{ "n", "v" },
