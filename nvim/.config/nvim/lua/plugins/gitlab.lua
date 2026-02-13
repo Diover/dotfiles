@@ -4,6 +4,7 @@ return {
 		"MunifTanjim/nui.nvim",
 		"nvim-lua/plenary.nvim",
 		"sindrets/diffview.nvim",
+		"stevearc/dressing.nvim",
 		"nvim-tree/nvim-web-devicons", -- Recommended but not required. Icons in discussion tree.
 	},
 	build = function()
