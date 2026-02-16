@@ -109,6 +109,10 @@ vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>")
 vim.keymap.set("n", "<Leader>q", function()
 	vim.cmd(vim.fn.getqflist({ winid = 0 }).winid ~= 0 and "cclose" or "copen")
 end, { desc = "Open [Q]uickfix list" })
+-- Cycle through quickfix list items
+vim.keymap.set("n", "]q", "<Cmd>try | cnext | catch | cfirst | catch | endtry<CR>")
+vim.keymap.set("n", "[q", "<Cmd>try | cprevious | catch | clast | catch | endtry<CR>")
+--
 vim.keymap.set("n", "<leader>]", "<cmd>lua vim.diagnostic.goto_next()<cr>", { desc = "[Errors] Go to [N]ext error" })
 vim.keymap.set("n", "<leader>[", "<cmd>lua vim.diagnostic.goto_prev()<cr>", { desc = "[Errors] Go to [P]rev error" })
 
