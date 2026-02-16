@@ -104,7 +104,11 @@ vim.api.nvim_create_autocmd("BufReadPost", {
 -- Another way could help when <cmd> doesn't work: ":let v:hlsearch = 1 - v:hlsearch<CR>"
 vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>")
 -- Diagnostic keymaps
-vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Open diagnostic [Q]uickfix list" })
+-- vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Open diagnostic [Q]uickfix list" })
+-- Toggle qflist window
+vim.keymap.set("n", "<Leader>q", function()
+	vim.cmd(vim.fn.getqflist({ winid = 0 }).winid ~= 0 and "cclose" or "copen")
+end, { desc = "Open [Q]uickfix list" })
 vim.keymap.set("n", "<leader>]", "<cmd>lua vim.diagnostic.goto_next()<cr>", { desc = "[Errors] Go to [N]ext error" })
 vim.keymap.set("n", "<leader>[", "<cmd>lua vim.diagnostic.goto_prev()<cr>", { desc = "[Errors] Go to [P]rev error" })
 
