@@ -175,6 +175,18 @@ vim.keymap.set(
 
 vim.keymap.set("n", "Q", "<nop>")
 
+-- Copy current git branch to clipboard
+vim.keymap.set("n", "<leader>gu", function()
+	local branch = vim.fn.system("git branch --show-current 2> /dev/null | tr -d '\\n'")
+	if branch and branch ~= "" then
+		vim.fn.setreg('"', branch)
+		vim.fn.setreg("+", branch)
+		vim.notify("Copied: " .. branch)
+	else
+		vim.notify("Not in a git repository")
+	end
+end, { desc = "[G]it: copy c[U]rrent branch to clipboard" })
+
 -- Write file as sudo
 -- This keymap makes typing "w" in the command mode freeze for some reason
 -- vim.keymap.set("c", "w!!", "w !sudo tee > /dev/null %", { silent = true, desc = "Write as Sudo" })
