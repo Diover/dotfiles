@@ -13,17 +13,21 @@ return {
 		local basename = vim.fs.basename(cwd)
 
 		local _99_provider = _99.Providers.OpenCodeProvider
-		local _99_model = "BIG-PICKLE"
+		local _99_model = "opencode/big-pickle"
 		local _99_config_path = vim.fn.expand("$HOME/.99.nvim")
 
 		if vim.fn.filereadable(_99_config_path) == 1 then
 			for line in io.lines(_99_config_path) do
 				local splits = vim.split(line, "=")
-				if splits[1] == "provider" then
+				if splits[1] == "cli" then
 					if splits[2] == "claude" then
 						_99_provider = _99.Providers.ClaudeCodeProvider
 					elseif splits[2] == "opencode" then
 						_99_provider = _99.Providers.OpenCodeProvider
+					elseif splits[2] == "gemini" then
+						_99_provider = _99.Providers.GeminiCLIProvider
+					elseif splits[2] == "kiro-cli" then
+						_99_provider = _99.Providers.KiroProvider
 					end
 				end
 				if splits[1] == "model" then
