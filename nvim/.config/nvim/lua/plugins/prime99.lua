@@ -13,19 +13,28 @@ return {
 		local basename = vim.fs.basename(cwd)
 
 		local _99_provider = _99.Providers.OpenCodeProvider
+		local _99_model = "BIG-PICKLE"
 		local _99_config_path = vim.fn.expand("$HOME/.99.nvim")
 
 		if vim.fn.filereadable(_99_config_path) == 1 then
 			for line in io.lines(_99_config_path) do
 				local splits = vim.split(line, "=")
-				if splits[1] == "provider" and splits[2] == "claude" then
-					_99_provider = _99.Providers.ClaudeCodeProvider
+				if splits[1] == "provider" then
+					if splits[2] == "claude" then
+						_99_provider = _99.Providers.ClaudeCodeProvider
+					elseif splits[2] == "opencode" then
+						_99_provider = _99.Providers.OpenCodeProvider
+					end
+				end
+				if splits[1] == "model" then
+					_99_model = splits[2]
 				end
 			end
 		end
 
 		_99.setup({
 			provider = _99_provider,
+			model = _99_model,
 			logger = {
 				level = _99.DEBUG,
 				path = "/tmp/" .. basename .. ".99.debug",
