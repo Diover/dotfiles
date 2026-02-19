@@ -98,6 +98,7 @@ return {
 		pcall(require("telescope").load_extension, "ui-select")
 		pcall(require("telescope").load_extension, "live_grep_args")
 		pcall(require("telescope").load_extension, "dap")
+		pcall(require("telescope").load_extension, "yank_history")
 
 		-- See `:help telescope.builtin`
 		local builtin = require("telescope.builtin")
@@ -120,6 +121,10 @@ return {
 		)
 		vim.keymap.set("n", "<leader><leader>", live_grep_args.live_grep_args, { desc = "[ ] Search by live grep" })
 		vim.keymap.set("n", "<leader>sf", builtin.find_files, { desc = "[S]earch [F]iles" })
+
+		-- Yank History (see yanky.lua)
+		local yank_history = require("telescope").extensions.yank_history
+		vim.keymap.set("n", "<leader>sy", yank_history.yank_history, { desc = "[S]earch [Y]ank History " })
 
 		-- Git searches
 		vim.keymap.set("n", "<leader>sgf", builtin.git_files, { desc = "[S]earch [G]it [F]iles" })

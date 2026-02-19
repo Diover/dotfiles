@@ -1,8 +1,11 @@
 return {
 	"gbprod/substitute.nvim",
+	dependencies = {
+		"gbprod/yanky.nvim",
+	},
 	config = function()
 		local opts = {
-			on_substitute = nil,
+			on_substitute = require("yanky.integration").substitute(),
 			yank_substituted_text = false,
 			preserve_cursor_position = false,
 			modifiers = nil,
