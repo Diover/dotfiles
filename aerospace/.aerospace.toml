@@ -172,16 +172,13 @@ alt-shift-l = ['join-with right', 'mode main']
 # check-further-callbacks = true
 # run = ['layout floating', 'move-node-to-workspace S']  # The callback itself
 
-[[on-window-detected]]
-if.app-id = 'com.google.Chrome'
-run = "move-node-to-workspace 1"
 
 [[on-window-detected]]
 if.app-id = 'com.tinyspeck.slackmacgap'
 run = "move-node-to-workspace 2"
 
 [[on-window-detected]]
-if.app-id = 'com.googlecode.iterm2'
+if.app-id = 'net.kovidgoyal.kitty'
 run = "move-node-to-workspace 3"
 
 [[on-window-detected]]
@@ -199,6 +196,10 @@ run = "move-node-to-workspace 6"
 [[on-window-detected]]
 if.app-id = 'md.obsidian'
 run = "move-node-to-workspace 7"
+
+[[on-window-detected]]
+if.app-id = 'com.google.Chrome'
+run = "move-node-to-workspace 8"
 
 [[on-window-detected]]
 if.app-name-regex-substring = 'finder'

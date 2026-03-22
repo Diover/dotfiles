@@ -6,6 +6,7 @@ vim.opt.softtabstop = 2
 vim.opt.shiftwidth = 2
 vim.opt.expandtab = true
 vim.opt.smartindent = true
+vim.opt.jumpoptions = "" -- work the same way as "stack"
 
 vim.opt.wrap = false
 
