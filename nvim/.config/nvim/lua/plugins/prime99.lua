@@ -72,7 +72,7 @@ return {
 				--- ... the other rules in that dir ...
 				---
 				custom_rules = {
-					"agents/rules/",
+					"~/.claude/skills",
 				},
 
 				--- Configure @file completion (all fields optional, sensible defaults)
@@ -98,7 +98,7 @@ return {
 			--- /foo/AGENT.md
 			--- assuming that /foo is project root (based on cwd)
 			md_files = {
-				"AGENT.md",
+				".claude/CLAUDE.md",
 			},
 		})
 
