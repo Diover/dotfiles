@@ -126,24 +126,58 @@ return {
 			},
 		}
 
+		-- Configure jdtls via vim.lsp.config (required for automatic_enable)
+		local jdk21 = vim.fn.system("/usr/libexec/java_home -v 21 2>/dev/null"):gsub("%s+$", "")
+		if jdk21 ~= "" then
+			local runtimes = {}
+			local jdk_specs = {
+				{ version = "1.8", name = "JavaSE-1.8" },
+				{ version = "11", name = "JavaSE-11" },
+				{ version = "21", name = "JavaSE-21", default = true },
+			}
+			for _, spec in ipairs(jdk_specs) do
+				local path = vim.fn.system(
+					"/usr/libexec/java_home -v " .. spec.version .. " 2>/dev/null"
+				):gsub("%s+$", "")
+				if path ~= "" and vim.fn.isdirectory(path) == 1 then
+					table.insert(runtimes, {
+						name = spec.name,
+						path = path,
+						default = spec.default or false,
+					})
+				end
+			end
+			local lombok_jar = vim.fn.stdpath("data") .. "/mason/packages/jdtls/lombok.jar"
+			vim.lsp.config("jdtls", {
+				cmd = {
+					"jdtls",
+					"--java-executable", jdk21 .. "/bin/java",
+					"--jvm-arg=-javaagent:" .. lombok_jar,
+				},
+				settings = {
+					java = {
+						configuration = {
+							runtimes = runtimes,
+						},
+					},
+				},
+			})
+		end
+
 		-- Ensure the servers and tools above are installed
 		local ensure_installed = vim.tbl_keys(servers or {})
 		require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
 
+		-- Set up servers via lspconfig (needed for lazydev.nvim lua_ls integration)
+		for server_name, server in pairs(servers) do
+			server.capabilities = vim.tbl_deep_extend("force", {}, capabilities, server.capabilities or {})
+			require("lspconfig")[server_name].setup(server)
+		end
+
 		require("mason-lspconfig").setup({
-			ensure_installed = {}, -- explicitly set to an empty table (installs are populated via mason-tool-installer)
+			ensure_installed = {},
 			automatic_enable = true,
 			automatic_installation = false,
-			handlers = {
-				function(server_name)
-					local server = servers[server_name] or {}
-					-- This handles overriding only values explicitly passed
-					-- by the server configuration above. Useful when disabling
-					-- certain features of an LSP (for example, turning off formatting for ts_ls)
-					server.capabilities = vim.tbl_deep_extend("force", {}, capabilities, server.capabilities or {})
-					require("lspconfig")[server_name].setup(server)
-				end,
-			},
 		})
 	end,
 }
