@@ -53,6 +53,36 @@ return {
 				vim.notify("Patch saved to " .. name)
 			end)
 		end, { desc = "[G]it [S]ave staged patch" })
+		vim.keymap.set("n", "<leader>gL", function()
+			local oil = require("oil")
+			local patch_file = nil
+
+			if vim.bo.filetype == "diff" or vim.fn.expand("%"):match("%.patch$") then
+				patch_file = vim.fn.expand("%")
+			elseif vim.bo.filetype == "oil" then
+				local entry = oil.get_cursor_entry()
+				if not entry then
+					vim.notify("No file under cursor")
+					return
+				end
+				local filename = entry.name
+				if not filename:match("%.patch$") then
+					vim.notify("Not a .patch file: " .. filename)
+					return
+				end
+				patch_file = oil.get_current_dir() .. filename
+			else
+				vim.notify("Not a patch file buffer")
+				return
+			end
+
+			local result = vim.fn.system("git apply " .. vim.fn.shellescape(patch_file))
+			if vim.v.shell_error ~= 0 then
+				vim.notify("Failed to apply patch: " .. result, vim.log.levels.ERROR)
+			else
+				vim.notify("Patch applied: " .. patch_file)
+			end
+		end, { desc = "[G]it [L]oad/apply patch" })
 
 		-- Git History, Stashes, Deeper diffs
 		local which_key = require("which-key")
@@ -76,6 +106,7 @@ return {
 			"<cmd>DiffviewFileHistory -g --range=stash<CR>",
 			{ desc = "[G]it [H]istory [S]tashes" }
 		)
+
 		vim.keymap.set(
 			"n",
 			"<leader>ghf",
