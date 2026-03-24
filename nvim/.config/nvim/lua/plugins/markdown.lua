@@ -10,6 +10,7 @@ return {
 			---@type render.md.UserConfig
 			local opts = {
 				completions = { lsp = { enabled = true } },
+				latex = { enabled = false },
 				-- completions = { blink = { enabled = true } },
 			}
 

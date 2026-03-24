@@ -33,6 +33,49 @@ return {
 		},
 	},
 	config = function()
+		local function smart_path_display(_, path)
+			local sep = "/"
+			local parts = vim.split(path, sep, { plain = true })
+			if parts[1] == "" then
+				table.remove(parts, 1)
+			end
+			if #parts <= 3 then
+				return path
+			end
+			local filename = parts[#parts]
+			local dirs = { unpack(parts, 1, #parts - 1) }
+			local max_w = 20
+
+			-- first/…/second-to-last/last/filename
+			local d = dirs[1] .. "/…/" .. dirs[#dirs - 1] .. "/" .. dirs[#dirs] .. "/" .. filename
+			if #d <= max_w then
+				return d
+			end
+			-- shorten first dir to 2 chars
+			d = dirs[1]:sub(1, 2) .. "/…/" .. dirs[#dirs - 1] .. "/" .. dirs[#dirs] .. "/" .. filename
+			if #d <= max_w then
+				return d
+			end
+			-- also shorten second-to-last dir
+			d = dirs[1]:sub(1, 2) .. "/…/" .. dirs[#dirs - 1]:sub(1, 2) .. "/" .. dirs[#dirs] .. "/" .. filename
+			if #d <= max_w then
+				return d
+			end
+			-- parent/filename only
+			d = dirs[#dirs] .. "/" .. filename
+			if #d <= max_w then
+				return d
+			end
+			-- filename only
+			return filename
+		end
+
+		local symbol_picker_opts = {
+			path_display = smart_path_display,
+			fname_width = 30,
+			symbol_width = 30,
+		}
+
 		--  This function gets run when an LSP attaches to a particular buffer.
 		vim.api.nvim_create_autocmd("LspAttach", {
 			group = vim.api.nvim_create_augroup("kickstart-lsp-attach", { clear = true }),
@@ -44,7 +87,9 @@ return {
 
 				map("grn", vim.lsp.buf.rename, "[R]e[n]ame")
 				map("gra", vim.lsp.buf.code_action, "[G]oto Code [A]ction", { "n", "x" })
-				map("grr", require("telescope.builtin").lsp_references, "[G]oto [R]eferences")
+				map("grr", function()
+					require("telescope.builtin").lsp_references(symbol_picker_opts)
+				end, "[G]oto [R]eferences")
 				map("gri", require("telescope.builtin").lsp_implementations, "[G]oto [I]mplementation")
 				map("grd", require("telescope.builtin").lsp_definitions, "[G]oto [D]efinition")
 
@@ -53,8 +98,15 @@ return {
 				--  In C this would take you to the header.
 				map("grD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
 
-				map("gs", require("telescope.builtin").lsp_document_symbols, "Open Document Symbols")
-				map("gw", require("telescope.builtin").lsp_dynamic_workspace_symbols, "Open Workspace Symbols")
+				map("gd", function()
+					require("telescope.builtin").lsp_document_symbols(symbol_picker_opts)
+				end, "Open Document Symbols")
+				map("gs", function()
+					require("telescope.builtin").lsp_dynamic_workspace_symbols(symbol_picker_opts)
+				end, "Open Workspace Symbols")
+
+				map("gco", require("telescope.builtin").lsp_outgoing_calls, "[G]oto [C]alls [O]utgoing")
+				map("gci", require("telescope.builtin").lsp_incoming_calls, "[G]oto [C]alls [I]utgoing ")
 
 				-- Turn off the LSP diagnostic messages if it becomes too noisy
 				map("<leader>th", function()
@@ -126,6 +178,11 @@ return {
 			},
 		}
 
+		-- Override terraform-ls filetypes to suppress unknown filetype warning
+		vim.lsp.config("terraformls", {
+			filetypes = { "terraform" },
+		})
+
 		-- Configure jdtls via vim.lsp.config (required for automatic_enable)
 		local jdk21 = vim.fn.system("/usr/libexec/java_home -v 21 2>/dev/null"):gsub("%s+$", "")
 		if jdk21 ~= "" then
@@ -136,9 +193,8 @@ return {
 				{ version = "21", name = "JavaSE-21", default = true },
 			}
 			for _, spec in ipairs(jdk_specs) do
-				local path = vim.fn.system(
-					"/usr/libexec/java_home -v " .. spec.version .. " 2>/dev/null"
-				):gsub("%s+$", "")
+				local path =
+					vim.fn.system("/usr/libexec/java_home -v " .. spec.version .. " 2>/dev/null"):gsub("%s+$", "")
 				if path ~= "" and vim.fn.isdirectory(path) == 1 then
 					table.insert(runtimes, {
 						name = spec.name,
@@ -151,7 +207,8 @@ return {
 			vim.lsp.config("jdtls", {
 				cmd = {
 					"jdtls",
-					"--java-executable", jdk21 .. "/bin/java",
+					"--java-executable",
+					jdk21 .. "/bin/java",
 					"--jvm-arg=-javaagent:" .. lombok_jar,
 				},
 				settings = {
@@ -168,11 +225,12 @@ return {
 		local ensure_installed = vim.tbl_keys(servers or {})
 		require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
 
-		-- Set up servers via lspconfig (needed for lazydev.nvim lua_ls integration)
+		-- Set up servers via vim.lsp.config (nvim 0.11+)
 		for server_name, server in pairs(servers) do
 			server.capabilities = vim.tbl_deep_extend("force", {}, capabilities, server.capabilities or {})
-			require("lspconfig")[server_name].setup(server)
+			vim.lsp.config(server_name, server)
 		end
+		vim.lsp.enable(vim.tbl_keys(servers))
 
 		require("mason-lspconfig").setup({
 			ensure_installed = {},

@@ -144,8 +144,13 @@ return {
 			{ desc = "[S]earch [G]it commits for current line selection in current b[U]ffer" }
 		)
 
+		-- LSP symbols
+		-- These are covered in the lspconfig
+		-- vim.keymap.set("n", "<leader>sd", builtin.lsp_document_symbols, { desc = "[S]earch [D]ocument symbols" })
+		-- vim.keymap.set("n", "<leader>ss", builtin.lsp_dynamic_workspace_symbols, { desc = "[S]earch workspace [S]ymbols" })
+
 		-- Diagnostics and notifications
-		vim.keymap.set("n", "<leader>sd", builtin.diagnostics, { desc = "[S]earch [D]iagnostics" })
+		vim.keymap.set("n", "<leader>sq", builtin.diagnostics, { desc = "[S]earch diagnostics ([Q]uickfix)" })
 		vim.keymap.set("n", "<leader>st", "<Cmd>Telescope notify<CR>", { desc = "[S]earch no[T]ification messages" })
 
 		-- Resume and misc

@@ -44,6 +44,15 @@ return {
 		vim.keymap.set("n", "<leader>gr", "<cmd>Neogit rebase<CR>")
 		vim.keymap.set("n", "<leader>gv", "<cmd>Neogit revert<CR>")
 		vim.keymap.set("n", "<leader>gm", "<cmd>Neogit merge<CR>")
+		vim.keymap.set("n", "<leader>gS", function()
+			vim.ui.input({ prompt = "Patch filename: ", default = "staged.patch" }, function(name)
+				if not name or name == "" then
+					return
+				end
+				vim.fn.system("git diff --cached --binary > " .. vim.fn.shellescape(name))
+				vim.notify("Patch saved to " .. name)
+			end)
+		end, { desc = "[G]it [S]ave staged patch" })
 
 		-- Git History, Stashes, Deeper diffs
 		local which_key = require("which-key")

@@ -29,6 +29,7 @@ return {
 				"python",
 				"java",
 				"yaml",
+				"regex",
 			},
 
 			-- Automatically install missing parsers when entering buffer
