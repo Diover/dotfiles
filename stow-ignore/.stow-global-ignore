@@ -2,5 +2,7 @@
 \.gitignore
 .git
 LICENSE
+README.md
+install-s3fs.sh
 install-all.sh
 stow-all.sh
