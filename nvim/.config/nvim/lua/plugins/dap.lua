@@ -113,6 +113,8 @@ return {
 					"mfussenegger/nvim-dap",
 					"nvim-neotest/nvim-nio",
 					"nvim-neotest/neotest-python",
+					"rcasia/neotest-java",
+					"mfussenegger/nvim-jdtls",
 					"nvim-lua/plenary.nvim",
 					"antoinemadec/FixCursorHold.nvim",
 					"nvim-treesitter/nvim-treesitter",
@@ -154,19 +156,20 @@ return {
 								-- instances for files containing a parametrize mark (default: false)
 								pytest_discover_instances = true,
 							}),
+							require("neotest-java"),
 						},
 					})
 
 					vim.keymap.set(
 						"n",
-						"<leader>tR",
+						"<leader>tr",
 						require("neotest").run.run,
-						{ desc = "[T]est [R]un all in the current file" }
+						{ desc = "[T]est [R]un nearest test" }
 					)
 
-					vim.keymap.set("n", "<leader>tr", function()
+					vim.keymap.set("n", "<leader>tR", function()
 						require("neotest").run.run(vim.fn.expand("%"))
-					end, { desc = "[T]est [R]un nearest test" })
+					end, { desc = "[T]est [R]un all in the current file" })
 
 					vim.keymap.set("n", "<leader>td", function()
 						require("neotest").run.run({ strategy = "dap" })

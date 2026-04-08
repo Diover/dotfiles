@@ -204,6 +204,24 @@ return {
 				end
 			end
 			local lombok_jar = vim.fn.stdpath("data") .. "/mason/packages/jdtls/lombok.jar"
+
+			local bundles = {}
+			local java_debug_jar = vim.fn.glob(
+				vim.fn.stdpath("data")
+					.. "/mason/packages/java-debug-adapter/extension/server/com.microsoft.java.debug.plugin-*.jar",
+				true
+			)
+			if java_debug_jar ~= "" then
+				table.insert(bundles, java_debug_jar)
+			end
+			vim.list_extend(
+				bundles,
+				vim.split(
+					vim.fn.glob(vim.fn.stdpath("data") .. "/mason/packages/java-test/extension/server/*.jar", true),
+					"\n"
+				)
+			)
+
 			vim.lsp.config("jdtls", {
 				cmd = {
 					"jdtls",
@@ -211,18 +229,37 @@ return {
 					jdk21 .. "/bin/java",
 					"--jvm-arg=-javaagent:" .. lombok_jar,
 				},
+				init_options = {
+					bundles = bundles,
+				},
 				settings = {
 					java = {
+						format = {
+							settings = {
+								url = vim.fs.root(vim.api.nvim_buf_get_name(0), { ".git" })
+									.. "/.ci/eclipse-formatter.xml",
+							},
+						},
 						configuration = {
 							runtimes = runtimes,
 						},
 					},
 				},
 			})
+
+			vim.api.nvim_create_autocmd("LspAttach", {
+				callback = function(args)
+					local client = vim.lsp.get_client_by_id(args.data.client_id)
+					if client and client.name == "jdtls" then
+						require("jdtls").setup_dap()
+					end
+				end,
+			})
 		end
 
 		-- Ensure the servers and tools above are installed
 		local ensure_installed = vim.tbl_keys(servers or {})
+		vim.list_extend(ensure_installed, { "java-debug-adapter", "java-test" })
 		require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
 
 		-- Set up servers via vim.lsp.config (nvim 0.11+)
