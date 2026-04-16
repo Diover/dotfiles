@@ -138,6 +138,18 @@ alt-shift-8 = ['move-node-to-workspace 8', 'workspace 8']
 alt-shift-9 = ['move-node-to-workspace 9', 'workspace 9']
 alt-shift-0 = ['move-node-to-workspace 0', 'workspace 0']
 
+# Open applications
+alt-cmd-1 = 'exec-and-forget open -a Finder'
+
+alt-cmd-3 = 'exec-and-forget open -a /Applications/kitty.app'
+alt-cmd-4 = 'exec-and-forget open -a "/Applications/Sublime Text.app"'
+alt-cmd-5 = 'exec-and-forget open -a "/Applications/Visual Studio Code.app"'
+alt-cmd-6 = 'exec-and-forget open -a "/Applications/IntelliJ IDEA.app"'
+alt-cmd-7 = 'exec-and-forget open -a /Applications/Obsidian.app'
+alt-cmd-8 = 'exec-and-forget open -a "/Applications/Google Chrome.app"'
+
+alt-cmd-0 = 'exec-and-forget open -a "/System/Applications/Utilities/Activity Monitor.app"'
+
 # See: https://nikitabobko.github.io/AeroSpace/commands#workspace-back-and-forth
 alt-tab = 'workspace-back-and-forth'
 # See: https://nikitabobko.github.io/AeroSpace/commands#move-workspace-to-monitor

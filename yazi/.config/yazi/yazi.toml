@@ -1,0 +1,6 @@
+[mgr]
+ratio = [1, 3, 5]  # Increases the preview pane relative to the file list
+
+[preview]
+max_width  = 3000  # Default is often lower; set to a higher value like 2000 or 3000
+max_height = 3000  # Ensure both are set high for large monitors

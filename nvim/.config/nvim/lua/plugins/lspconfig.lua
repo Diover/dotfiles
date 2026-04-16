@@ -179,8 +179,16 @@ return {
 		}
 
 		-- Override terraform-ls filetypes to suppress unknown filetype warning
+		-- Exclude non-file URIs (e.g. diffview://) to prevent terraform-ls panics
 		vim.lsp.config("terraformls", {
 			filetypes = { "terraform" },
+			root_dir = function(bufnr, on_dir)
+				local bufname = vim.api.nvim_buf_get_name(bufnr)
+				if not bufname:match("^/") and not bufname:match("^file://") then
+					return
+				end
+				on_dir(vim.fs.root(bufnr, { ".terraform", "*.tf" }) or vim.fn.getcwd())
+			end,
 		})
 
 		-- Configure jdtls via vim.lsp.config (required for automatic_enable)
@@ -236,7 +244,7 @@ return {
 					java = {
 						format = {
 							settings = {
-								url = vim.fs.root(vim.api.nvim_buf_get_name(0), { ".git" })
+								url = (vim.fs.root(vim.api.nvim_buf_get_name(0), { ".git" }) or "")
 									.. "/.ci/eclipse-formatter.xml",
 							},
 						},
