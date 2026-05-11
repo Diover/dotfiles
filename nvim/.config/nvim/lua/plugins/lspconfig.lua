@@ -108,6 +108,15 @@ return {
 				map("gco", require("telescope.builtin").lsp_outgoing_calls, "[G]oto [C]alls [O]utgoing")
 				map("gci", require("telescope.builtin").lsp_incoming_calls, "[G]oto [C]alls [I]utgoing ")
 
+				-- jdtls specific features
+				local jdtls = require("jdtls")
+				map("gro", jdtls.organize_imports, "LSP jdtls: [O]rganize imports", { "v" })
+				map("grv", jdtls.extract_variable, "LSP jdtls: Extract variable", { "v" })
+				map("grc", jdtls.extract_constant, "LSP jdtls: Extract constant", { "v" })
+				map("grm", function()
+					jdtls.extract_method({ visual = true })
+				end, "LSP jdtls: Extract method", { "v" })
+
 				-- Turn off the LSP diagnostic messages if it becomes too noisy
 				map("<leader>th", function()
 					vim.diagnostic.enable(not vim.diagnostic.is_enabled())
@@ -251,6 +260,31 @@ return {
 						configuration = {
 							runtimes = runtimes,
 						},
+						sources = {
+							organizeImports = {
+								starThreshold = 9999,
+								staticStarThreshold = 9999,
+							},
+						},
+						completion = {
+							favoriteStaticMembers = {
+								"org.hamcrest.MatcherAssert.assertThat",
+								"org.hamcrest.Matchers.*",
+								"org.hamcrest.CoreMatchers.*",
+								"org.junit.jupiter.api.Assertions.*",
+								"java.util.Objects.requireNonNull",
+								"java.util.Objects.requireNonNullElse",
+								"org.mockito.Mockito.*",
+							},
+							filteredTypes = {
+								"com.sun.*",
+								"io.micrometer.shaded.*",
+								"java.awt.*",
+								"jdk.*",
+								"sun.*",
+							},
+						},
+						signatureHelp = { enabled = true },
 					},
 				},
 			})

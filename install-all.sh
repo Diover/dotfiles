@@ -4,4 +4,7 @@ brew install --cask font-jetbrains-mono-nerd-font font-meslo-lg-nerd-font font-z
 brew install starship neovim fzf fd zsh-autosuggestions zsh-syntax-highlighting lua-language-server yazi coreutils reattach-to-user-namespace ripgrep ast-grep obsidian pngpaste imagemagick
 brew install --cask kitty
 brew install go
+brew install jesseduffield/lazydocker/lazydocker
+brew install kdash-rs/kdash/kdash
+curl -sSL https://raw.githubusercontent.com/caioricciuti/dev-cockpit/main/install.sh | bash;
 #brew install --cask miniconda;
