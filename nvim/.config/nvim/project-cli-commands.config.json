@@ -1,0 +1,20 @@
+{
+  "commands": {
+    "current:ls": "ls -la ${currentBuffer}",
+    "make": "make -C $(dirname ${currentBuffer})",
+    "make:clean": "echo 'Working folder:'; dirname ${currentBuffer}; make -C $(dirname ${currentBuffer}) -f ${currentBuffer} clean",
+    "make:aws_login": "echo 'Working folder:'; dirname ${currentBuffer}; make -C $(dirname ${currentBuffer}) -f ${currentBuffer} aws_login",
+    "make:prepare_package": "echo 'Working folder:'; dirname ${currentBuffer}; make -C $(dirname ${currentBuffer}) -f ${currentBuffer} prepare_package",
+    "make:create_wf": "echo 'Working folder:'; dirname ${currentBuffer}; make -C $(dirname ${currentBuffer}) -f ${currentBuffer} create_wf",
+    "make:miniwdl_check": "echo 'Working folder:'; dirname ${currentBuffer}; make -C $(dirname ${currentBuffer}) -f ${currentBuffer} miniwdl_check",
+    "make:run_wf": "echo 'Working folder:'; dirname ${currentBuffer}; make -C $(dirname ${currentBuffer}) -f ${currentBuffer} run_wf",
+    "mvn:test": "echo 'mvn compile -v; mvn test'; mvn compile -v; mvn test",
+    "mvn:compile": "echo 'mvn compile -v; mvn compile'; mvn compile -v; mvn compile",
+    "mvn:package": "echo 'mvn compile -v; mvn package -DskipTests'; mvn compile -v; mvn package -DskipTests",
+    "mvn:install": "echo 'mvn compile -v; mvn install -DskipTests'; mvn compile -v; mvn install -DskipTests",
+    "mvn:clean": "echo 'mvn compile -v; mvn clean -U'; mvn compile -v; mvn clean -U",
+    "mvn:spotless:check": "echo 'mvn spotless:check'; mvn spotless:check",
+    "mvn:spotless:apply": "echo 'mvn spotless:apply'; mvn spotless:apply",
+    "print:env": "env"
+  }
+}

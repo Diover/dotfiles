@@ -110,7 +110,7 @@ return {
 
 				-- jdtls specific features
 				local jdtls = require("jdtls")
-				map("gro", jdtls.organize_imports, "LSP jdtls: [O]rganize imports", { "v" })
+				map("gro", jdtls.organize_imports, "LSP jdtls: [O]rganize imports", { "v", "n" })
 				map("grv", jdtls.extract_variable, "LSP jdtls: Extract variable", { "v" })
 				map("grc", jdtls.extract_constant, "LSP jdtls: Extract constant", { "v" })
 				map("grm", function()

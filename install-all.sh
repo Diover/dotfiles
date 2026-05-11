@@ -6,5 +6,6 @@ brew install --cask kitty
 brew install go
 brew install jesseduffield/lazydocker/lazydocker
 brew install kdash-rs/kdash/kdash
+brew install clawscli/tap/claws
 curl -sSL https://raw.githubusercontent.com/caioricciuti/dev-cockpit/main/install.sh | bash;
 #brew install --cask miniconda;

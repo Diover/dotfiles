@@ -3,8 +3,30 @@ return {
 	config = function()
 		local actions = require("diffview.actions")
 
+		-- Patch detach_buffer to guard against invalid buffers when restoring files
+		local File = require("diffview.vcs.file").File
+		local orig_detach = File.detach_buffer
+		File.detach_buffer = function(self)
+			if self.bufnr and not vim.api.nvim_buf_is_valid(self.bufnr) then
+				File.attached[self.bufnr] = nil
+				return
+			end
+			orig_detach(self)
+		end
+
 		require("diffview").setup({
 			enhanced_diff_hl = false,
+			hooks = {
+				view_leave = function(view)
+					local tabpage = view.tabpage
+					if tabpage and vim.api.nvim_tabpage_is_valid(tabpage) then
+						for _, win in ipairs(vim.api.nvim_tabpage_list_wins(tabpage)) do
+							local buf = vim.api.nvim_win_get_buf(win)
+							vim.bo[buf].modified = false
+						end
+					end
+				end,
+			},
 			keymaps = {
 				view = {
 					{ "n", "q", "<Cmd>DiffviewClose<CR>", { desc = "Close menu" } },

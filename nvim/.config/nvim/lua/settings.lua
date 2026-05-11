@@ -181,6 +181,12 @@ vim.keymap.set(
 	[[:%s/\<<C-r><C-w>\>//g<Left><Left>]],
 	{ desc = "[R]eplace word under cursor in the current buffer" }
 )
+vim.keymap.set(
+	"v",
+	"<leader>r",
+	[["hy:%s/<C-r>h//g<Left><Left>]],
+	{ desc = "[R]eplace visual selection in the current buffer" }
+)
 
 vim.keymap.set("n", "Q", "<nop>")
 
