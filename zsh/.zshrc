@@ -9,7 +9,10 @@ then
   compinit
 fi
 
-# vim mode: 
+export EDITOR="nvim"
+export VISUAL="nvim"
+
+# vim mode:
 # set -o vi
 
 # Edit current command line in vim mode

@@ -177,13 +177,13 @@ vim.keymap.set("n", "<leader>bd", ":bd<CR>", { desc = "[B]uffer [D]elete" })
 -- Search and replace word under the cursor
 vim.keymap.set(
 	"n",
-	"<leader>r",
+	"<leader>rr",
 	[[:%s/\<<C-r><C-w>\>//g<Left><Left>]],
 	{ desc = "[R]eplace word under cursor in the current buffer" }
 )
 vim.keymap.set(
 	"v",
-	"<leader>r",
+	"<leader>rr",
 	[["hy:%s/<C-r>h//g<Left><Left>]],
 	{ desc = "[R]eplace visual selection in the current buffer" }
 )

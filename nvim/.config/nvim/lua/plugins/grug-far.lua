@@ -61,6 +61,19 @@ return {
 			desc = "Grug-far: [S]earch and [r]eplace in current file",
 		},
 		{
+			"<leader>rs",
+			function()
+				require("grug-far").open({
+					visualSelectionUsage = "operate-within-range",
+					prefills = {
+						search = vim.fn.expand("<cword>"),
+					},
+				})
+			end,
+			mode = { "x" },
+			desc = "Grug-far: [R]eplace in visual [s]election",
+		},
+		{
 			"<leader>sR",
 			function()
 				local grug = require("grug-far")

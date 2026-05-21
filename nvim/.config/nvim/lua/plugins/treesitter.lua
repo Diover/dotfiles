@@ -1,10 +1,10 @@
 return {
 	{
 		"nvim-treesitter/nvim-treesitter",
+		branch = "main",
 		build = ":TSUpdate",
 		-- Work only within the context of a buffer
 		event = { "BufReadPre", "BufNewFile" },
-		main = "nvim-treesitter.configs", -- Sets main module to use for opts
 
 		-- [[ Configure Treesitter ]] See `:help nvim-treesitter`
 		opts = {
@@ -38,23 +38,28 @@ return {
 
 			indent = {
 				enable = true,
-				disable = { "ruby" },
 			},
 
 			highlight = {
-				-- `false` will disable the whole extension
 				enable = true,
-
-				-- Setting this to true will run `:h syntax` and tree-sitter at the same time.
-				-- Set this to `true` if you depend on "syntax" being enabled (like for indentation).
-				-- Using this option may slow down your editor, and you may see some duplicate highlights.
-				-- Instead of true it can also be a list of languages
-				additional_vim_regex_highlighting = { "markdown", "ruby" },
+			},
+		},
+	},
+	{
+		"MeanderingProgrammer/treesitter-modules.nvim",
+		dependencies = { "nvim-treesitter/nvim-treesitter" },
+		opts = {
+			highlight = {
+				enable = true,
 			},
 			incremental_selection = {
 				enable = true,
+				disable = false,
+				-- set value to `false` to disable individual mapping
 				keymaps = {
+					-- init_selection = "lc-space>",
 					node_incremental = "v",
+					scope_incremental = false,
 					node_decremental = "V",
 				},
 			},
@@ -63,6 +68,7 @@ return {
 	{
 		"nvim-treesitter/nvim-treesitter-textobjects",
 		dependencies = { "nvim-treesitter" },
+		branch = "main",
 		config = function() end,
 		opts = {
 			textobjects = {

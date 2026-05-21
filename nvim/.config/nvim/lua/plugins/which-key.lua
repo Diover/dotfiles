@@ -46,6 +46,7 @@ return {
 		spec = {
 			{ "<leader>s", group = "[S]earch" },
 			{ "<leader>t", group = "[T]oggle" },
+			{ "<leader>x", group = "Diagnostics/Trouble" },
 			{ "<leader>h", group = "Git [H]unk", mode = { "n", "v" } },
 		},
 	},

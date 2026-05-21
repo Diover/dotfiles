@@ -1,37 +1,37 @@
 return {
 	"folke/trouble.nvim",
-	opts = {}, -- for default options, refer to the configuration section for custom setup.
+	opts = {},
 	cmd = "Trouble",
 	keys = {
 		{
-			"<leader>xx",
+			"<leader>xd",
 			"<cmd>Trouble diagnostics toggle<cr>",
-			desc = "Diagnostics (Trouble)",
+			desc = "[D]iagnostics (workspace)",
 		},
 		{
-			"<leader>xX",
-			"<cmd>Trouble diagnostics toggle filter.buf=0<cr>",
-			desc = "Buffer Diagnostics (Trouble)",
+			"<leader>xx",
+			"<cmd>Trouble diagnostics toggle focus=true filter.buf=0<cr>",
+			desc = "Diagnostics (buffer)",
 		},
 		{
-			"<leader>cs",
-			"<cmd>Trouble symbols toggle focus=false<cr>",
-			desc = "Symbols (Trouble)",
+			"<leader>xs",
+			"<cmd>Trouble symbols toggle focus=true win.position=left<cr>",
+			desc = "[S]ymbols",
 		},
 		{
-			"<leader>cl",
-			"<cmd>Trouble lsp toggle focus=false win.position=right<cr>",
-			desc = "LSP Definitions / references / ... (Trouble)",
+			"<leader>xl",
+			"<cmd>Trouble lsp toggle focus=true win.position=right<cr>",
+			desc = "[L]SP definitions/references",
 		},
 		{
-			"<leader>xL",
+			"<leader>xf",
 			"<cmd>Trouble loclist toggle<cr>",
-			desc = "Location List (Trouble)",
+			desc = "Location list ([F]ile)",
 		},
 		{
-			"<leader>xQ",
+			"<leader>xq",
 			"<cmd>Trouble qflist toggle<cr>",
-			desc = "Quickfix List (Trouble)",
+			desc = "[Q]uickfix list",
 		},
 	},
 }

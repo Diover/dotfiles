@@ -1,0 +1,29 @@
+[[mgr.prepend_keymap]]
+on   = [ ".", "." ]
+run  = "hidden toggle"
+desc = "Toggle hidden files"
+
+[[mgr.prepend_keymap]]
+on   = [ ".", "s" ]
+run  = "plugin what-size -- -h"
+desc = "Calc size of hovered item or selection"
+
+[[mgr.prepend_keymap]]
+on   = [ "g", "s" ]
+run  = "cd ~/Documents/Screenshots/"
+desc = "Cd to ~/Documents/Screenshots/"
+
+[[mgr.prepend_keymap]]
+on   = [ "g", "r" ]
+run  = "cd ~/repo"
+desc = "Cd to ~/repo"
+
+[[mgr.prepend_keymap]]
+on   = [ "g", "a" ]
+run  = "cd ~/.aws"
+desc = "Cd to ~/.aws"
+
+[[mgr.prepend_keymap]]
+on   = [ "-" ]
+run  = "leave"
+desc = "Go one folder up"
