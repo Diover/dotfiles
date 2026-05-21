@@ -1,2 +1,2 @@
-stow stow-ignore;
-stow aerospace nvim starship tmux zsh;
+stow stow-ignore
+stow aerospace nvim starship tmux zsh yazi
