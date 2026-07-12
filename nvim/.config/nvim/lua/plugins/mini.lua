@@ -13,7 +13,12 @@ return {
 			ai.setup({
 				custom_textobjects = {
 					a = ai.gen_spec.treesitter({ a = "@parameter.outer", i = "@parameter.inner" }),
-					c = ai.gen_spec.treesitter({ a = "@comment.outer", i = "@comment.inner" }),
+					c = ai.gen_spec.treesitter({ a = "@class.outer", i = "@class.inner" }),
+					C = ai.gen_spec.treesitter({ a = "@comment.outer", i = "@comment.inner" }),
+					f = ai.gen_spec.treesitter({ a = "@function.outer", i = "@function.inner" }),
+					x = ai.gen_spec.treesitter({ a = "@call.outer", i = "@call.inner" }),
+					["="] = ai.gen_spec.treesitter({ a = "@assignment.outer", i = "@assignment.inner" }),
+					D = ai.gen_spec.treesitter({ a = "@number.inner", i = "@number.inner" }),
 					s = { -- Single words in different cases (camelCase, snake_case, etc.)
 						{
 							"%u[%l%d]+%f[^%l%d]",
@@ -24,7 +29,9 @@ return {
 						},
 						"^().*()$",
 					},
-					f = ai.gen_spec.treesitter({ a = "@function.outer", i = "@function.inner" }),
+					t = { { "<[%w%.%-:]+[^>]*>().-()</%w[%w%.%-:]*>" } },
+					T = { "</?()[%w%.%-:]+()[^>]*>" },
+					A = { '[%w%.%-:]+%s*=%s*"()[^"]*"', "[%w%.%-:]+%s*=%s*'()[^']*'" },
 					g = function() -- whole file
 						local from = { line = 1, col = 1 }
 						local to = {
@@ -46,7 +53,7 @@ return {
 					goto_left = "g[",
 					goto_right = "g]",
 				},
-				n_lines = 500,
+				n_lines = 1000,
 			})
 		end,
 	},
@@ -129,11 +136,11 @@ return {
 						neigh_pattern = "[^%w\\][^%w]",
 						register = { cr = false },
 					},
-					-- Backtick: Prevent pairing if either side is a letter
+					-- Backtick: Prevent pairing if either side is a letter or a backtick
 					["`"] = {
 						action = "closeopen",
 						pair = "``",
-						neigh_pattern = "[^%w\\][^%w]",
+						neigh_pattern = "[^%w`\\][^%w`]",
 						register = { cr = false },
 					},
 				},

@@ -3,7 +3,7 @@ return {
 	dependencies = {
 		"MunifTanjim/nui.nvim",
 		"nvim-lua/plenary.nvim",
-		"sindrets/diffview.nvim",
+		"dlyongemallo/diffview-plus.nvim",
 		"stevearc/dressing.nvim",
 		"nvim-tree/nvim-web-devicons", -- Recommended but not required. Icons in discussion tree.
 	},

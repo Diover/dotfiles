@@ -19,7 +19,7 @@ sanity_check() {
   fi
 }
 
-switch_to() {
+function switch_to() {
   if [[ -z $TMUX ]]; then
     tmux attach-session -t "$1"
   else

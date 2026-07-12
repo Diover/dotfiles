@@ -5,8 +5,21 @@ return {
     -- 👇 in this section, choose your own keymappings!
     {
       "<leader>-",
-      "<cmd>Yazi<cr>",
-      desc = "Open yazi at the current file",
+      function()
+        local buf = vim.api.nvim_get_current_buf()
+        if vim.bo[buf].filetype == "oil" then
+          local dir = require("oil").get_current_dir()
+          require("yazi").yazi(nil, dir)
+        else
+          local file = vim.api.nvim_buf_get_name(buf)
+          if file ~= "" then
+            require("yazi").yazi(nil, vim.fn.fnamemodify(file, ":h"))
+          else
+            require("yazi").yazi()
+          end
+        end
+      end,
+      desc = "Open yazi at current directory",
     },
     {
       -- Open in the current working directory

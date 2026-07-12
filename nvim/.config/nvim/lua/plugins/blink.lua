@@ -23,10 +23,16 @@ return { -- Autocompletion
 					"rafamadriz/friendly-snippets",
 					config = function()
 						require("luasnip.loaders.from_vscode").lazy_load()
+						-- Jump to the last position of the snippet
+						vim.keymap.set({ "i", "s" }, "<C-l>", function()
+							local ls = require("luasnip")
+							while ls.jumpable(1) do
+								ls.jump(1)
+							end
+						end)
 					end,
 				},
 			},
-			opts = {},
 		},
 		"folke/lazydev.nvim",
 	},

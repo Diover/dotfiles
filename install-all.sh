@@ -7,5 +7,8 @@ brew install go
 brew install jesseduffield/lazydocker/lazydocker
 brew install kdash-rs/kdash/kdash
 brew install clawscli/tap/claws
+brew install opensuperwhisper
 curl -sSL https://raw.githubusercontent.com/caioricciuti/dev-cockpit/main/install.sh | bash;
+curl -fsSL https://raw.githubusercontent.com/kunchenguid/no-mistakes/main/docs/install.sh | sh;
+curl -fsSL https://kunchenguid.github.io/treehouse/install.sh | sh;
 #brew install --cask miniconda;

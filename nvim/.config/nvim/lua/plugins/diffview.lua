@@ -1,5 +1,13 @@
 return {
-	"sindrets/diffview.nvim",
+	"dlyongemallo/diffview-plus.nvim",
+	dependencies = {
+		{
+			"rickhowe/diffchar.vim",
+			init = function()
+				vim.g.DiffCharDoMapping = 0
+			end,
+		},
+	},
 	config = function()
 		local actions = require("diffview.actions")
 
@@ -14,8 +22,21 @@ return {
 			orig_detach(self)
 		end
 
+		-- Patch sync_scroll to guard against invalid windows after staging
+		local Layout = require("diffview.scene.layout").Layout
+		local orig_sync_scroll = Layout.sync_scroll
+		Layout.sync_scroll = function(self)
+			for _, win in ipairs(self.windows) do
+				if not win:is_valid() then
+					return
+				end
+			end
+			orig_sync_scroll(self)
+		end
+
 		require("diffview").setup({
 			enhanced_diff_hl = false,
+			use_icons = true,
 			hooks = {
 				view_leave = function(view)
 					local tabpage = view.tabpage
@@ -38,7 +59,13 @@ return {
 						"n",
 						"<CR>",
 						actions.goto_file_tab,
-						{ desc = "Open file in a previous tab page" },
+						{ desc = "Open file in a new tab page" },
+					},
+					{
+						"n",
+						"gf",
+						actions.goto_file_tab,
+						{ desc = "Open file in a new tab page" },
 					},
 					{ "n", "q", "<Cmd>DiffviewClose<CR>", { desc = "Close menu" } },
 				},
@@ -47,7 +74,13 @@ return {
 						"n",
 						"<CR>",
 						actions.goto_file_tab,
-						{ desc = "Open file in a previous tab page" },
+						{ desc = "Open file in a new tab page" },
+					},
+					{
+						"n",
+						"gf",
+						actions.goto_file_tab,
+						{ desc = "Open file in a new tab page" },
 					},
 					{ "n", "q", "<Cmd>DiffviewClose<CR>", { desc = "Close menu" } },
 				},

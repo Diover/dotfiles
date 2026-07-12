@@ -128,7 +128,13 @@ return {
 								dap = { justMyCode = false },
 								-- Command line arguments for runner
 								-- Can also be a function to return dynamic values
-								args = { "--log-level", "DEBUG" },
+								args = function(runner, position, strategy)
+									local a = { "--log-level", "DEBUG" }
+									if strategy == "dap" then
+										table.insert(a, "--no-cov")
+									end
+									return a
+								end,
 								-- Runner to use. Will use pytest if available by default.
 								-- Can be a function to return dynamic value.
 								runner = "pytest",
@@ -140,10 +146,10 @@ return {
 								python = function()
 									-- debugpy supports launching an application with a different interpreter then the one used to launch debugpy itself.
 									local workspace_python_executable = get_workspace_python_executable()
-									print(
-										"Using the following python path for this workspace: "
-											.. workspace_python_executable
-									)
+									-- print(
+									-- 	"Using the following python path for this workspace: "
+									-- 		.. workspace_python_executable
+									-- )
 									return workspace_python_executable
 								end,
 
@@ -167,6 +173,25 @@ return {
 						{ desc = "[T]est [R]un nearest test" }
 					)
 
+					vim.keymap.set("n", "<leader>to", function()
+						require("neotest").output_panel.open()
+						-- Focus the panel window
+						for _, win in ipairs(vim.api.nvim_list_wins()) do
+							local buf = vim.api.nvim_win_get_buf(win)
+							if vim.bo[buf].filetype == "neotest-output-panel" then
+								vim.api.nvim_set_current_win(win)
+								return
+							end
+						end
+					end, { desc = "[T]est: [O]pen output panel" })
+
+					vim.api.nvim_create_autocmd("FileType", {
+						pattern = "neotest-output-panel",
+						callback = function()
+							vim.keymap.set("n", "q", "<cmd>close<cr>", { buffer = true })
+						end,
+					})
+
 					vim.keymap.set("n", "<leader>tR", function()
 						require("neotest").run.run(vim.fn.expand("%"))
 					end, { desc = "[T]est [R]un all in the current file" })
@@ -184,6 +209,18 @@ return {
 		config = function()
 			--Set up configurations
 			local dap, dv = require("dap"), require("dap-view")
+
+			-- Inject PYTHONPATH for monorepo sub-projects so pytest imports resolve
+			dap.listeners.on_config["pythonpath"] = function(config)
+				if config.type == "python" then
+					local root = require("neotest-python.base").get_root(vim.fn.expand("%:p"))
+					if root then
+						config.env = vim.tbl_extend("keep", config.env or {}, { PYTHONPATH = root })
+						config.cwd = root
+					end
+				end
+				return config
+			end
 
 			-- AUtomatic toggle for the nvim-dap-view at the start/end of the debug session
 			dap.listeners.before.attach["dap-view-config"] = function()
@@ -241,7 +278,9 @@ return {
 					pythonPath = function()
 						-- debugpy supports launching an application with a different interpreter then the one used to launch debugpy itself.
 						local workspace_python_executable = get_workspace_python_executable()
-						print("Using the following python path for this workspace: " .. workspace_python_executable)
+						-- vim.lsp.log.info(
+						-- 	"Using the following python path for this workspace: " .. workspace_python_executable
+						-- )
 						return workspace_python_executable
 					end,
 				},

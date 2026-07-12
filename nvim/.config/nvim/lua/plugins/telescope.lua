@@ -145,9 +145,13 @@ return {
 		)
 
 		-- LSP symbols
-		-- These are covered in the lspconfig
-		-- vim.keymap.set("n", "<leader>sd", builtin.lsp_document_symbols, { desc = "[S]earch [D]ocument symbols" })
-		-- vim.keymap.set("n", "<leader>ss", builtin.lsp_dynamic_workspace_symbols, { desc = "[S]earch workspace [S]ymbols" })
+		vim.keymap.set("n", "<leader>sc", function()
+			builtin.lsp_dynamic_workspace_symbols({ symbols = { "class" } })
+		end, { desc = "[S]earch [C]lasses (workspace)" })
+
+		vim.keymap.set("n", "<leader>sm", function()
+			builtin.lsp_dynamic_workspace_symbols({ symbols = { "method", "function" } })
+		end, { desc = "[S]earch [M]ethods (workspace)" })
 
 		-- Diagnostics and notifications
 		vim.keymap.set("n", "<leader>sq", builtin.diagnostics, { desc = "[S]earch diagnostics ([Q]uickfix)" })
@@ -164,5 +168,40 @@ return {
 				previewer = false,
 			}))
 		end, { desc = "[/] Fuzzily search in current buffer" })
+
+		vim.keymap.set("n", "<leader>sd", function()
+			builtin.find_files({
+				find_command = { "fd", "--type", "directory", "--hidden", "--exclude", ".git" },
+				prompt_title = "Find Directory",
+				attach_mappings = function(_, map)
+					local actions = require("telescope.actions")
+					local action_state = require("telescope.actions.state")
+					actions.select_default:replace(function(prompt_bufnr)
+						local entry = action_state.get_selected_entry(prompt_bufnr)
+						actions.close(prompt_bufnr)
+						require("oil").open(entry.path)
+					end)
+					return true
+				end,
+			})
+		end, { desc = "[S]earch [D]irectory and open in Oil" })
+
+		vim.keymap.set("n", "<leader>sD", function()
+			builtin.find_files({
+				find_command = { "fd", "--type", "directory", "--hidden", "--exclude", ".git", "--exclude", "Library" },
+				cwd = vim.env.HOME,
+				prompt_title = "Find Directory (Home)",
+				attach_mappings = function(_, map)
+					local actions = require("telescope.actions")
+					local action_state = require("telescope.actions.state")
+					actions.select_default:replace(function(prompt_bufnr)
+						local entry = action_state.get_selected_entry(prompt_bufnr)
+						actions.close(prompt_bufnr)
+						require("oil").open(entry.path)
+					end)
+					return true
+				end,
+			})
+		end, { desc = "[S]earch [D]irectory on disk and open in Oil" })
 	end,
 }

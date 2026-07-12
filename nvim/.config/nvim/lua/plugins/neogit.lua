@@ -2,7 +2,7 @@ return {
 	"NeogitOrg/neogit",
 	dependencies = {
 		"nvim-lua/plenary.nvim", -- required
-		"sindrets/diffview.nvim",
+		"dlyongemallo/diffview-plus.nvim",
 		"lewis6991/gitsigns.nvim",
 		"nvim-telescope/telescope.nvim",
 	},

@@ -146,20 +146,28 @@ return {
 				cmd = { "pyright-langserver", "--stdio" },
 				filetypes = { "python" },
 				root_markers = {
-					{
-						".conda",
-						".venv",
-					},
-					{
-						"pyproject.toml",
-						"setup.py",
-						"setup.cfg",
-						"requirements.txt",
-						"Pipfile",
-						"pyrightconfig.json",
-					},
+					{ ".conda", ".venv" },
+					{ "pyproject.toml", "setup.py", "pyrightconfig.json" },
 					".git",
 				},
+				-- root_markers controls where Neovim sets the root directory for the LSP server, but it has nothing to do with which Python environment Pyright uses.
+				-- Pyright auto-discovers a venv only if it's named .venv (or venv) in the workspace root. The name .conda is not in Pyright's built-in search list.
+				-- on_init rewires pyright to use a conda env at a custom location.
+				on_init = function(client)
+					local root = client.root_dir
+					if not root then
+						return
+					end
+					for _, name in ipairs({ ".conda", ".venv", "venv" }) do
+						local python = root .. "/" .. name .. "/bin/python"
+						if vim.uv.fs_stat(python) then
+							client.settings = vim.tbl_deep_extend("force", client.settings, {
+								python = { pythonPath = python },
+							})
+							return
+						end
+					end
+				end,
 				settings = {
 					python = {
 						analysis = {
@@ -199,6 +207,15 @@ return {
 				on_dir(vim.fs.root(bufnr, { ".terraform", "*.tf" }) or vim.fn.getcwd())
 			end,
 		})
+
+		-- Configure wdl-lsp (not in Mason/nvim-lspconfig; requires `pip install wdl-lsp`)
+		vim.lsp.config("wdl_lsp", {
+			cmd = { "wdl-lsp" },
+			filetypes = { "wdl" },
+			root_markers = { ".git" },
+			capabilities = capabilities,
+		})
+		vim.lsp.enable("wdl_lsp")
 
 		-- Configure jdtls via vim.lsp.config (required for automatic_enable)
 		local jdk21 = vim.fn.system("/usr/libexec/java_home -v 21 2>/dev/null"):gsub("%s+$", "")

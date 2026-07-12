@@ -6,6 +6,7 @@
     "make:aws_login": "echo 'Working folder:'; dirname ${currentBuffer}; make -C $(dirname ${currentBuffer}) -f ${currentBuffer} aws_login",
     "make:prepare_package": "echo 'Working folder:'; dirname ${currentBuffer}; make -C $(dirname ${currentBuffer}) -f ${currentBuffer} prepare_package",
     "make:create_wf": "echo 'Working folder:'; dirname ${currentBuffer}; make -C $(dirname ${currentBuffer}) -f ${currentBuffer} create_wf",
+    "make:get_wf_status": "echo 'Working folder:'; dirname ${currentBuffer}; make -C $(dirname ${currentBuffer}) -f ${currentBuffer} get_wf_status",
     "make:miniwdl_check": "echo 'Working folder:'; dirname ${currentBuffer}; make -C $(dirname ${currentBuffer}) -f ${currentBuffer} miniwdl_check",
     "make:run_wf": "echo 'Working folder:'; dirname ${currentBuffer}; make -C $(dirname ${currentBuffer}) -f ${currentBuffer} run_wf",
     "mvn:test": "echo 'mvn compile -v; mvn test'; mvn compile -v; mvn test",
@@ -19,6 +20,8 @@
     "cargo:check": "echo 'cargo check'; cargo --version; cargo check",
     "cargo:build": "echo 'cargo build'; cargo --version; cargo build",
     "cargo:test": "echo 'cargo test'; cargo --version; cargo test",
-    "cargo:run": "echo 'cargo run'; cargo --version; cargo run"
+    "cargo:run": "echo 'cargo run'; cargo --version; cargo run",
+    "python:test": "cd $(git -C $(dirname ${currentBuffer}) rev-parse --show-toplevel)&& python -m pytest",
+    "python:install-setup-reqs": "cd $(git -C $(dirname ${currentBuffer}) rev-parse --show-toplevel) && python -m pip install ."
   }
 }

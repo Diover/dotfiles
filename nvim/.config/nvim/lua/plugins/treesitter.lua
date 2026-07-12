@@ -1,3 +1,27 @@
+local languages = {
+	"lua",
+	"luadoc",
+	"markdown",
+	"markdown_inline",
+	"html",
+	"diff",
+	"vim",
+	"query",
+	"vimdoc",
+	"javascript",
+	"typescript",
+	"c",
+	"cpp",
+	"rust",
+	"lua",
+	"bash",
+	"python",
+	"java",
+	"yaml",
+	"json",
+	"xml",
+	"regex",
+}
 return {
 	{
 		"nvim-treesitter/nvim-treesitter",
@@ -5,59 +29,49 @@ return {
 		build = ":TSUpdate",
 		-- Work only within the context of a buffer
 		event = { "BufReadPre", "BufNewFile" },
+		config = function()
+			-- replicate `ensure_installed`, runs asynchronously, skips existing languages
+			require("nvim-treesitter").install(languages)
 
-		-- [[ Configure Treesitter ]] See `:help nvim-treesitter`
-		opts = {
-			-- A list of parser names, or "all"
-			ensure_installed = {
-				"lua",
-				"luadoc",
-				"markdown",
-				"markdown_inline",
-				"html",
-				"diff",
-				"vim",
-				"query",
-				"vimdoc",
-				"javascript",
-				"typescript",
-				"c",
-				"cpp",
-				"rust",
-				"lua",
-				"bash",
-				"python",
-				"java",
-				"yaml",
-				"regex",
-			},
+			vim.api.nvim_create_autocmd("FileType", {
+				group = vim.api.nvim_create_augroup("treesitter.setup", {}),
+				callback = function(args)
+					local buf = args.buf
+					local filetype = args.match
 
-			-- Automatically install missing parsers when entering buffer
-			-- Recommendation: set to false if you don"t have `tree-sitter` CLI installed locally
-			auto_install = true,
+					-- you need some mechanism to avoid running on buffers that do not
+					-- correspond to a language (like oil.nvim buffers), this implementation
+					-- checks if a parser exists for the current language
+					local language = vim.treesitter.language.get_lang(filetype) or filetype
+					if not vim.treesitter.language.add(language) then
+						return
+					end
 
-			indent = {
-				enable = true,
-			},
+					-- replicate `fold = { enable = true }`
+					vim.wo.foldmethod = "expr"
+					vim.wo.foldexpr = "v:lua.vim.treesitter.foldexpr()"
 
-			highlight = {
-				enable = true,
-			},
-		},
+					-- replicate `highlight = { enable = true }`
+					vim.treesitter.start(buf, language)
+
+					-- replicate `indent = { enable = true }`
+					vim.bo[buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+				end,
+			})
+		end,
 	},
 	{
 		"MeanderingProgrammer/treesitter-modules.nvim",
 		dependencies = { "nvim-treesitter/nvim-treesitter" },
 		opts = {
 			highlight = {
-				enable = true,
+				enable = false,
 			},
 			incremental_selection = {
 				enable = true,
-				disable = false,
 				-- set value to `false` to disable individual mapping
 				keymaps = {
-					-- init_selection = "lc-space>",
+					init_selection = "<c-space>",
 					node_incremental = "v",
 					scope_incremental = false,
 					node_decremental = "V",
@@ -69,76 +83,60 @@ return {
 		"nvim-treesitter/nvim-treesitter-textobjects",
 		dependencies = { "nvim-treesitter" },
 		branch = "main",
-		config = function() end,
-		opts = {
-			textobjects = {
+		config = function()
+			local move = require("nvim-treesitter-textobjects.move")
+			local swap = require("nvim-treesitter-textobjects.swap")
+			local repeatable_move = require("nvim-treesitter-textobjects.repeatable_move")
+
+			-- Repeat movement with ; and ,
+			vim.keymap.set({ "n", "x", "o" }, ";", repeatable_move.repeat_last_move)
+			vim.keymap.set({ "n", "x", "o" }, ",", repeatable_move.repeat_last_move_opposite)
+
+			-- Make builtin f, F, t, T also repeatable with ; and ,
+			vim.keymap.set({ "n", "x", "o" }, "f", repeatable_move.builtin_f_expr, { expr = true })
+			vim.keymap.set({ "n", "x", "o" }, "F", repeatable_move.builtin_F_expr, { expr = true })
+			vim.keymap.set({ "n", "x", "o" }, "t", repeatable_move.builtin_t_expr, { expr = true })
+			vim.keymap.set({ "n", "x", "o" }, "T", repeatable_move.builtin_T_expr, { expr = true })
+
+			require("nvim-treesitter-textobjects").setup({
 				move = {
-					enable = true,
 					set_jumps = true,
-					goto_next_start = {
-						["[f"] = "@function.outer",
-						["]["] = "@class.outer",
-					},
-					goto_previous_start = {
-						["]f"] = "@function.outer",
-						["[["] = "@class.outer",
-					},
-					goto_previous_end = {
-						["[F"] = "@function.outer",
-						["[]"] = "@class.outer",
-					},
 				},
-				swap = {
-					enable = true,
-					swap_next = {
-						["<leader>a"] = "@parameter.inner",
-					},
-					swap_previous = {
-						["<leader>A"] = "@parameter.inner",
-					},
-				},
-				select = {
-					enable = true,
+			})
 
-					-- Automatically jump forward to textobj, similar to targets.vim
-					lookahead = true,
+			-- Move: jump between code structures
+			local move_maps = {
+				{ "]f", move.goto_next_start, "@function.outer", "Next function start" },
+				{ "[f", move.goto_previous_start, "@function.outer", "Prev function start" },
+				{ "]F", move.goto_next_end, "@function.outer", "Next function end" },
+				{ "[F", move.goto_previous_end, "@function.outer", "Prev function end" },
+				{ "]c", move.goto_next_start, "@class.outer", "Next class start" },
+				{ "[c", move.goto_previous_start, "@class.outer", "Prev class start" },
+				{ "]C", move.goto_next_end, "@class.outer", "Next class end" },
+				{ "[C", move.goto_previous_end, "@class.outer", "Prev class end" },
+				{ "]r", move.goto_next_start, "@return.outer", "Next return statement" },
+				{ "[r", move.goto_previous_start, "@return.outer", "Prev return statement" },
+				{ "]l", move.goto_next_start, "@loop.outer", "Next loop" },
+				{ "[l", move.goto_previous_start, "@loop.outer", "Prev loop" },
+				{ "]i", move.goto_next_start, "@conditional.outer", "Next conditional" },
+				{ "[i", move.goto_previous_start, "@conditional.outer", "Prev conditional" },
+				{ "]x", move.goto_next_start, "@call.outer", "Next call" },
+				{ "[x", move.goto_previous_start, "@call.outer", "Prev call" },
+			}
+			for _, m in ipairs(move_maps) do
+				vim.keymap.set({ "n", "x", "o" }, m[1], function()
+					m[2](m[3])
+				end, { desc = m[4] })
+			end
 
-					keymaps = {
-						-- You can use the capture groups defined in textobjects.scm
-						["af"] = "@function.outer",
-						["if"] = "@function.inner",
-						-- You can optionally set descriptions to the mappings (used in the desc parameter of
-						-- nvim_buf_set_keymap) which plugins like which-key display
-						["ic"] = { query = "@class.inner", desc = "Select inner part of a class region" },
-						["ac"] = { query = "@class.outer", desc = "Select outer part of a class region" },
-						-- You can also use captures from other query groups like `locals.scm`
-						["as"] = { query = "@local.scope", query_group = "locals", desc = "Select language scope" },
-					},
-					-- You can choose the select mode (default is charwise 'v')
-					--
-					-- Can also be a function which gets passed a table with the keys
-					-- * query_string: eg '@function.inner'
-					-- * method: eg 'v' or 'o'
-					-- and should return the mode ('v', 'V', or '<c-v>') or a table
-					-- mapping query_strings to modes.
-					selection_modes = {
-						["@parameter.outer"] = "v", -- charwise
-						["@function.outer"] = "V", -- linewise
-						["@class.outer"] = "<c-v>", -- blockwise
-					},
-					-- If you set this to `true` (default is `false`) then any textobject is
-					-- extended to include preceding or succeeding whitespace. Succeeding
-					-- whitespace has priority in order to act similarly to eg the built-in
-					-- `ap`.
-					--
-					-- Can also be a function which gets passed a table with the keys
-					-- * query_string: eg '@function.inner'
-					-- * selection_mode: eg 'v'
-					-- and should return true or false
-					include_surrounding_whitespace = true,
-				},
-			},
-		},
+			-- Swap: parameters
+			vim.keymap.set("n", "<leader>a", function()
+				swap.swap_next("@parameter.inner")
+			end, { desc = "Swap parameter with next" })
+			vim.keymap.set("n", "<leader>A", function()
+				swap.swap_previous("@parameter.inner")
+			end, { desc = "Swap parameter with previous" })
+		end,
 	},
 	{
 		"nvim-treesitter/nvim-treesitter-context",
@@ -181,6 +179,16 @@ return {
 				end,
 				mode = { "x", "o" },
 				desc = "Select context-aware indent (inner, entire range) in line-wise visual mode",
+			},
+		},
+	},
+	{
+		"andymass/vim-matchup",
+		dependencies = { "nvim-treesitter/nvim-treesitter" },
+		event = { "BufReadPre", "BufNewFile" },
+		opts = {
+			treesitter = {
+				stopline = 1000,
 			},
 		},
 	},
