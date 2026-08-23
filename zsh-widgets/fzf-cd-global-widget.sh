@@ -33,6 +33,8 @@ jump-screenshots-widget() {
   _jump_to_dir "$screenshots_dir"
 }
 zle -N jump-screenshots-widget
+# tells the underlying system driver to ignore Ctrl + S and Ctrl + Q signals globally for the shell session
+stty -ixon
 bindkey '^G^S' jump-screenshots-widget
 
 # 3. Jump to Downloads folder (Ctrl+G, Ctrl+D)
