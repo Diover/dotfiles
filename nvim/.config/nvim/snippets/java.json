@@ -1,0 +1,11 @@
+{
+  "builder method": {
+    "prefix": "with",
+    "body": [
+      "public ${1:BuilderType} with${2:Value}(${3:ValueType} ${4:value}) {",
+      "${0}",
+      "return this;",
+      "}"
+    ]
+  }
+}

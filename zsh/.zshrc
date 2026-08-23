@@ -40,6 +40,11 @@ source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 # Set up fzf key bindings and fuzzy completion
 source <(fzf --zsh)
+export FZF_DEFAULT_COMMAND='fd --type f --hidden --strip-cwd-prefix'
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+export FZF_ALT_C_COMMAND='fd --type d --hidden --strip-cwd-prefix'
+# Tell ripgrep to ignore .cache when using fzf's interactive search (if applicable)
+export FZF_DEFAULT_OPS="--ripgrep-command 'rg --files --hidden --glob \"!.cache/*\" --glob \"!.cargo/*\" --glob \"!.git/*\" --glob \"!undodir/*\" --glob \"!Caches/*\"'"
 
  # Set the history settings
 HISTSIZE=10000000
@@ -84,8 +89,12 @@ function y() {
 }
 
 ###############################################################
+# Source zsh widgets
+###############################################################
+source ${HOME}/fzf-cd-global-widget.sh
+
+###############################################################
 #  to add local customizations, create '~/.localrc' and
 #  add changes to it
 ###############################################################
 [ -f "/Users/ssmirnov/.localrc" ] && source "/Users/ssmirnov/.localrc"
-

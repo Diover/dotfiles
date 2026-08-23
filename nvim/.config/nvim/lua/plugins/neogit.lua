@@ -90,9 +90,15 @@ return {
 
 		vim.keymap.set(
 			"n",
-			"<leader>ghb",
+			"<leader>ghh",
 			"<cmd>DiffviewOpen origin/HEAD...HEAD --imply-local<CR>",
-			{ desc = "[G]it [H]istory diff against [B]ase" }
+			{ desc = "[G]it [H]istory diff against Main (in [H]EAD, but not in Main)" }
+		)
+		vim.keymap.set(
+			"n",
+			"<leader>ghm",
+			"<cmd>DiffviewOpen HEAD...origin/HEAD --imply-local<CR>",
+			{ desc = "[G]it [H]istory diff against Main (in [M]ain, but not in HEAD)" }
 		)
 		vim.keymap.set(
 			"n",

@@ -131,7 +131,7 @@ return {
 			float = false,
 			underline = { severity = vim.diagnostic.severity.ERROR },
 			signs = true,
-			virtual_lines = true,
+			virtual_lines = false,
 		})
 
 		-- LSP servers and clients are able to communicate to each other what features they support.
@@ -206,6 +206,11 @@ return {
 				end
 				on_dir(vim.fs.root(bufnr, { ".terraform", "*.tf" }) or vim.fn.getcwd())
 			end,
+			capabilities = {
+				textDocument = {
+					codeLens = vim.NIL,
+				},
+			},
 		})
 
 		-- Configure wdl-lsp (not in Mason/nvim-lspconfig; requires `pip install wdl-lsp`)

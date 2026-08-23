@@ -15,7 +15,7 @@ return {
 		},
 		{
 			"<leader>xs",
-			"<cmd>Trouble symbols toggle focus=true win.position=left<cr>",
+			"<cmd>Trouble symbols toggle focus=true win.position=left win.size=40<cr>",
 			desc = "[S]ymbols",
 		},
 		{

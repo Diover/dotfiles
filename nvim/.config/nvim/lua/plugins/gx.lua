@@ -12,7 +12,7 @@ return {
 		-- you can specify also another config if you want
 		config = function()
 			local jira_link = "http://go.jira.company.com/browse/"
-			local gx_config_path = vim.fn.expand("$HOME/.nvim-gx-handlers")
+			local gx_config_path = vim.fn.expand("$HOME/.gx-handlers.nvim")
 
 			if vim.fn.filereadable(gx_config_path) == 1 then
 				for line in io.lines(gx_config_path) do

@@ -21,6 +21,8 @@ local languages = {
 	"json",
 	"xml",
 	"regex",
+	"hcl",
+	"terraform",
 }
 return {
 	{
@@ -38,6 +40,11 @@ return {
 				callback = function(args)
 					local buf = args.buf
 					local filetype = args.match
+
+					-- kulala.nvim manages its own treesitter lifecycle for http/rest
+					if filetype == "http" or filetype == "rest" then
+						return
+					end
 
 					-- you need some mechanism to avoid running on buffers that do not
 					-- correspond to a language (like oil.nvim buffers), this implementation

@@ -9,6 +9,7 @@
     "make:get_wf_status": "echo 'Working folder:'; dirname ${currentBuffer}; make -C $(dirname ${currentBuffer}) -f ${currentBuffer} get_wf_status",
     "make:miniwdl_check": "echo 'Working folder:'; dirname ${currentBuffer}; make -C $(dirname ${currentBuffer}) -f ${currentBuffer} miniwdl_check",
     "make:run_wf": "echo 'Working folder:'; dirname ${currentBuffer}; make -C $(dirname ${currentBuffer}) -f ${currentBuffer} run_wf",
+    "make:show_env": "echo 'Working folder:'; dirname ${currentBuffer}; make -C $(dirname ${currentBuffer}) -f ${currentBuffer} show_env",
     "mvn:test": "echo 'mvn compile -v; mvn test'; mvn compile -v; mvn test",
     "mvn:compile": "echo 'mvn compile -v; mvn compile'; mvn compile -v; mvn compile",
     "mvn:package": "echo 'mvn compile -v; mvn package -DskipTests'; mvn compile -v; mvn package -DskipTests",
@@ -16,12 +17,10 @@
     "mvn:clean": "echo 'mvn compile -v; mvn clean -U'; mvn compile -v; mvn clean -U",
     "mvn:spotless:check": "echo 'mvn spotless:check'; mvn spotless:check",
     "mvn:spotless:apply": "echo 'mvn spotless:apply'; mvn spotless:apply",
-    "print:env": "env",
+    "print:env": "echo 'Working folder:'; dirname ${currentBuffer}; echo 'Environment variables:'; env",
     "cargo:check": "echo 'cargo check'; cargo --version; cargo check",
     "cargo:build": "echo 'cargo build'; cargo --version; cargo build",
     "cargo:test": "echo 'cargo test'; cargo --version; cargo test",
-    "cargo:run": "echo 'cargo run'; cargo --version; cargo run",
-    "python:test": "cd $(git -C $(dirname ${currentBuffer}) rev-parse --show-toplevel)&& python -m pytest",
-    "python:install-setup-reqs": "cd $(git -C $(dirname ${currentBuffer}) rev-parse --show-toplevel) && python -m pip install ."
+    "cargo:run": "echo 'cargo run'; cargo --version; cargo run"
   }
 }

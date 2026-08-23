@@ -62,6 +62,7 @@ vim.wo.foldexpr = "v:lua.vim.treesitter.foldexpr()"
 -- See `:help 'confirm'`
 vim.o.confirm = true
 vim.opt.fillchars = vim.opt.fillchars + "diff: "
+vim.opt.diffopt = "internal,filler,closeoff,context:5,linematch:180,algorithm:histogram"
 
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
@@ -172,6 +173,11 @@ vim.keymap.set("t", "<C-Right>", "<cmd>vertical resize +15<CR>")
 -- Paste without losing the buffer
 vim.keymap.set("i", "<C-p>", "<Esc>p", { desc = "[P]aste buffer (insert mode), exit to normal mode" })
 
+-- Diff two windows
+vim.keymap.set("n", "<leader>wd", function()
+	vim.cmd("windo diffthis")
+end, { noremap = true, desc = "[W]in do: [D]iff this" })
+
 -- Delete current buffer
 vim.keymap.set("n", "<leader>bd", ":bd<CR>", { desc = "[B]uffer [D]elete" })
 -- Search and replace word under the cursor
@@ -208,6 +214,25 @@ end, { desc = "[G]it: copy c[U]rrent branch to clipboard" })
 
 --Save without formatting
 vim.keymap.set("n", "<leader>wf", ":noautocmd w<CR>", { desc = "[W]rite without [F]ormatting" })
+
+-- Clear jdtls cache
+vim.keymap.set("n", "<leader>cj", function()
+	vim.fn.system("rm -rf ~/.cache/jdtls ~/Library/Caches/jdtls/")
+	vim.notify("jdtls cache cleared")
+end, { desc = "[C]lear [J]dtls cache" })
+
+vim.keymap.set("n", "<leader>fr", function()
+	local clients = vim.lsp.get_clients({ bufnr = 0 })
+	if #clients == 0 then
+		vim.notify("No LSP clients attached to this buffer", vim.log.levels.WARN)
+		return
+	end
+	local lines = {}
+	for _, client in ipairs(clients) do
+		table.insert(lines, client.name .. " root:\n  " .. (client.root_dir or "No root dir"))
+	end
+	vim.notify(table.concat(lines, "\n"), vim.log.levels.INFO)
+end, { desc = "LSP: [F]ile [R]oots" })
 
 -- Open file explorer
 vim.keymap.set("n", "<leader>pv", "<cmd>Oil<cr>", { desc = "Open file explorer in the current directory" })

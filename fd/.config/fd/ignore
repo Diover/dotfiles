@@ -1,0 +1,8 @@
+# Ignore specific build and dependency directories globally
+node_modules/
+.cache/
+.git/
+.cargo/
+# Depends on nvim setting
+undodir/
+Caches/

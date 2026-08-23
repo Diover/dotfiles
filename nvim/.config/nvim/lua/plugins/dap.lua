@@ -173,7 +173,7 @@ return {
 						{ desc = "[T]est [R]un nearest test" }
 					)
 
-					vim.keymap.set("n", "<leader>to", function()
+					vim.keymap.set("n", "<leader>tu", function()
 						require("neotest").output_panel.open()
 						-- Focus the panel window
 						for _, win in ipairs(vim.api.nvim_list_wins()) do
@@ -183,7 +183,7 @@ return {
 								return
 							end
 						end
-					end, { desc = "[T]est: [O]pen output panel" })
+					end, { desc = "[T]est: open output panel [U]I" })
 
 					vim.api.nvim_create_autocmd("FileType", {
 						pattern = "neotest-output-panel",
