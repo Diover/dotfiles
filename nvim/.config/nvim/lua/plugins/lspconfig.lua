@@ -178,7 +178,6 @@ return {
 					},
 				},
 			},
-			rust_analyzer = {},
 			lua_ls = {
 				-- cmd = { ... },
 				-- filetypes = { ... },
@@ -323,7 +322,7 @@ return {
 
 		-- Ensure the servers and tools above are installed
 		local ensure_installed = vim.tbl_keys(servers or {})
-		vim.list_extend(ensure_installed, { "java-debug-adapter", "java-test" })
+		vim.list_extend(ensure_installed, { "java-debug-adapter", "java-test", "codelldb" })
 		require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
 
 		-- Set up servers via vim.lsp.config (nvim 0.11+)
