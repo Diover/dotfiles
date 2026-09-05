@@ -121,6 +121,18 @@ return {
 				map("<leader>th", function()
 					vim.diagnostic.enable(not vim.diagnostic.is_enabled())
 				end, "[T]oggle Diagnostic [H]ints")
+
+				map("<leader>tl", function()
+					local cur = vim.diagnostic.config().virtual_lines
+					vim.diagnostic.config({ virtual_lines = not cur })
+				end, "[T]oggle Diagnostic [L]ines")
+
+				map("<leader>tv", function()
+					local _, win = vim.diagnostic.open_float()
+					if win then
+						vim.api.nvim_set_current_win(win)
+					end
+				end, "[T]oggle [V]erbose Diagnostic for the current line")
 			end,
 		})
 
@@ -132,6 +144,7 @@ return {
 			underline = { severity = vim.diagnostic.severity.ERROR },
 			signs = true,
 			virtual_lines = false,
+			virtual_text = false,
 		})
 
 		-- LSP servers and clients are able to communicate to each other what features they support.
