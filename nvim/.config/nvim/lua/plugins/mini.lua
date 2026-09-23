@@ -82,7 +82,7 @@ return {
 					["["] = {
 						action = "open",
 						pair = "[]",
-						neigh_pattern = ".[%s%z%)}%]]",
+						-- neigh_pattern = ".[%s%z%)}%]]",
 						register = { cr = false },
 						-- foo|bar -> press "[" -> foo[bar
 						-- foobar| -> press "[" -> foobar[]
@@ -96,9 +96,9 @@ return {
 					["{"] = {
 						action = "open",
 						pair = "{}",
-						-- neigh_pattern = ".[%s%z%)}]",
-						neigh_pattern = ".[%s%z%)}%]]",
-						register = { cr = false },
+						-- neigh_pattern = ".[%s%z%)}%w%d]",
+						-- neigh_pattern = ".[%s%z%)%}%]]",
+						register = { cr = true },
 						-- foo|bar -> press "{" -> foo{bar
 						-- foobar| -> press "{" -> foobar{}
 						-- |foobar -> press "{" -> {foobar
@@ -111,7 +111,7 @@ return {
 						action = "open",
 						pair = "()",
 						-- neigh_pattern = ".[%s%z]",
-						neigh_pattern = ".[%s%z%)]",
+						-- neigh_pattern = ".[%s%z%)]",
 						register = { cr = false },
 						-- foo|bar -> press "(" -> foo(bar
 						-- foobar| -> press "(" -> foobar()
@@ -126,14 +126,14 @@ return {
 					['"'] = {
 						action = "closeopen",
 						pair = '""',
-						neigh_pattern = "[^%w\\][^%w]",
+						neigh_pattern = '[^%w"\\][^%w"]',
 						register = { cr = false },
 					},
 					-- Single quote: Prevent pairing if either side is a letter
 					["'"] = {
 						action = "closeopen",
 						pair = "''",
-						neigh_pattern = "[^%w\\][^%w]",
+						neigh_pattern = "[^%w'\\][^%w']",
 						register = { cr = false },
 					},
 					-- Backtick: Prevent pairing if either side is a letter or a backtick
@@ -144,6 +144,16 @@ return {
 						register = { cr = false },
 					},
 				},
+			})
+
+			-- Don't autopair single quotes in Rust ('a' character literals)
+			local rust_quote = vim.api.nvim_create_augroup("MiniPairsRustNoSingleQuote", { clear = true })
+			vim.api.nvim_create_autocmd("FileType", {
+				group = rust_quote,
+				pattern = "rust",
+				callback = function()
+					vim.keymap.set("i", "'", "'", { buffer = true })
+				end,
 			})
 		end,
 	},
