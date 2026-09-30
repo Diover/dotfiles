@@ -3,7 +3,7 @@ return {
 		"akinsho/nvim-toggleterm.lua",
 		config = function()
 			require("toggleterm").setup({
-				direction = "tab",
+				direction = "vertical",
 				highlights = { FloatBorder = { link = "FloatBorder" } },
 				open_mapping = [[<c-\>]],
 				on_create = function(term)
