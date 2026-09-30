@@ -33,6 +33,8 @@ return {
 		},
 	},
 	config = function()
+		local project = require("lib.project")
+
 		local function smart_path_display(_, path)
 			local sep = "/"
 			local parts = vim.split(path, sep, { plain = true })
@@ -158,11 +160,11 @@ return {
 			pyright = {
 				cmd = { "pyright-langserver", "--stdio" },
 				filetypes = { "python" },
-				root_markers = {
+				root_dir = project.make_root_dir({
 					{ ".conda", ".venv" },
 					{ "pyproject.toml", "setup.py", "pyrightconfig.json" },
 					".git",
-				},
+				}),
 				-- root_markers controls where Neovim sets the root directory for the LSP server, but it has nothing to do with which Python environment Pyright uses.
 				-- Pyright auto-discovers a venv only if it's named .venv (or venv) in the workspace root. The name .conda is not in Pyright's built-in search list.
 				-- on_init rewires pyright to use a conda env at a custom location.
@@ -191,6 +193,9 @@ return {
 					},
 				},
 			},
+			rust_analyzer = {
+				root_dir = project.make_root_dir({ "Cargo.toml", ".git" }),
+			},
 			lua_ls = {
 				-- cmd = { ... },
 				-- filetypes = { ... },
@@ -216,7 +221,7 @@ return {
 				if not bufname:match("^/") and not bufname:match("^file://") then
 					return
 				end
-				on_dir(vim.fs.root(bufnr, { ".terraform", "*.tf" }) or vim.fn.getcwd())
+				on_dir(vim.fs.root(bufnr, { ".terraform", ".tfstate", "main.tf" }, ".git") or vim.fn.getcwd())
 			end,
 			capabilities = {
 				textDocument = {
@@ -233,6 +238,9 @@ return {
 			capabilities = capabilities,
 		})
 		vim.lsp.enable("wdl_lsp")
+
+		-- Enable bash-language-server
+		vim.lsp.enable("bashls")
 
 		-- Configure jdtls via vim.lsp.config (required for automatic_enable)
 		local jdk21 = vim.fn.system("/usr/libexec/java_home -v 21 2>/dev/null"):gsub("%s+$", "")
@@ -274,6 +282,10 @@ return {
 			)
 
 			vim.lsp.config("jdtls", {
+				root_dir = project.make_root_dir({
+					{ "pom.xml", "build.gradle", "build.gradle.kts" },
+					".git",
+				}),
 				cmd = {
 					"jdtls",
 					"--java-executable",

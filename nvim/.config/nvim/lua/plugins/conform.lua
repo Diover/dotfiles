@@ -28,6 +28,11 @@ return {
 				}
 			end
 		end,
+		formatters = {
+			xmlformatter = {
+				prepend_args = { "--indent", "4", "--blanks", "--preserve-attributes" },
+			},
+		},
 		formatters_by_ft = {
 			javascript = { "prettierd" },
 			typescript = { "prettierd" },
@@ -43,6 +48,7 @@ return {
 			liquid = { "prettierd" },
 			lua = { "stylua" },
 			python = { "isort", "black" },
+			xml = { "xmlformatter" },
 			-- Conform can also run multiple formatters sequentially
 			-- python = { "isort", "black" },
 			--
