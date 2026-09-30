@@ -60,6 +60,7 @@
   "obsidian.nvim": { "branch": "main", "commit": "69fe7c6bf61a5222b5061a9a9dfc5023f2ec0fdc" },
   "oil-git-status.nvim": { "branch": "main", "commit": "a3e2ccb00cb8822115e28a9a1791eda051d940c9" },
   "oil.nvim": { "branch": "master", "commit": "b73018b75affd13fa38e2fc94ef753b465f770d7" },
+  "opencode.nvim": { "branch": "v2", "commit": "55c994ddbe2a0272b342a6e0c2bf1e2096bbf76e" },
   "persistent-breakpoints.nvim": { "branch": "main", "commit": "d1656221836207787b8a7969cc2dc72668c4742a" },
   "plenary.nvim": { "branch": "master", "commit": "74b06c6c75e4eeb3108ec01852001636d85a932b" },
   "project-cli-commands.nvim": { "branch": "main", "commit": "2e6fe15ea2f829526868e3d73e2a220db28328bd" },
