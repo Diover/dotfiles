@@ -1,0 +1,92 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+
+  // Hardening beyond permissions
+  "share": "disabled",        // never publish session data
+  "autoupdate": "notify",     // don't silently install new code
+  "snapshot": true,           // keep undo/redo, so bad edits are recoverable
+  "formatter": false,         // no silent file rewrites on save
+
+  "permission": {
+    "*": "ask",               // default: nothing runs unprompted
+
+    // Read-only surface stays frictionless
+    "read": {
+      "*": "allow",
+      "*.env": "deny", "*.env.*": "deny",
+      "**/id_rsa": "deny", "**/*.pem": "deny", "**/*.key": "deny",
+      "**/.aws/**": "deny", "**/.ssh/**": "deny"
+    },
+    "glob": "allow",
+    "grep": "allow",
+    "list": "allow",
+
+    // Every write confirms; secrets and VCS internals are never writable
+    "edit": {
+      "*": "ask",
+      // Mirror read's secret denials exactly — unreadable must mean unwritable
+      "*.env": "deny", "*.env.*": "deny",
+      "**/id_rsa": "deny", "**/*.pem": "deny", "**/*.key": "deny",
+      "**/.aws/**": "deny", "**/.ssh/**": "deny",
+      "**/.git/**": "deny"
+    },
+
+    // FIX 1: shell patterns match RAW command text and are NOT home-expanded,
+    // so the workspace boundary has to be spelled out in full. Anchoring every
+    // read to /Users/ssmirnov/repo/* is what stops `cat ~/.config/...`.
+    // FIX 2: the read/edit secret denials never applied to shell; they are
+    // mirrored below, placed LAST so last-match-wins makes them override the
+    // allows above (including for files inside the repo).
+    "bash": {
+      "*": "ask",
+
+      // read-only, no path argument: runs in the cwd, which external_directory
+      // already confines to ~/repo
+      "pwd": "allow",
+      "ls": "allow",
+      "git status*": "allow", "git diff*": "allow", "git log*": "allow",
+      "git show*": "allow", "git branch*": "allow",
+
+      // read-only WITH a path: only the workspace is frictionless. Anything
+      // absolute outside ~/repo matches no allow and falls through to "ask".
+      "ls /Users/ssmirnov/repo/*": "allow",
+      "cat /Users/ssmirnov/repo/*": "allow",
+      "head /Users/ssmirnov/repo/*": "allow",
+      "tail /Users/ssmirnov/repo/*": "allow",
+      "wc /Users/ssmirnov/repo/*": "allow",
+      "rg /Users/ssmirnov/repo/*": "allow",
+      "which *": "allow",
+
+      // a relative path can climb out of the workspace; refuse the climb
+      "../*": "deny", "*../*": "deny",
+
+      // secrets: hard-blocked for shell exactly as for read/edit
+      "*.env": "deny", "*.env.*": "deny",
+      "*id_rsa*": "deny", "*.pem": "deny", "*.key": "deny",
+      "*.aws*": "deny", "*.ssh*": "deny",
+
+      // destructive / network / privilege-escalating: hard blocked
+      "rm *": "deny", "sudo *": "deny", "curl *": "deny", "wget *": "deny",
+      "chmod 777*": "deny", "git push*": "deny",
+      "git reset --hard*": "deny", "git clean*": "deny",
+      // state-changing but recoverable: confirm
+      "git add*": "ask", "git commit*": "ask", "git checkout*": "ask",
+      "git switch*": "ask", "git restore*": "ask", "git stash*": "ask"
+    },
+
+    "webfetch": "ask",         // arbitrary URL fetch is the exfil path
+    "websearch": "allow",
+    "task": "allow",           // subagents inherit these same rules
+    "skill": "allow",
+    "lsp": "allow",
+    "question": "allow",       // must stay allow, else asking you prompts first
+    "todowrite": "allow",
+    "doom_loop": "deny",       // hard-stop a stuck 3x-identical-call loop
+
+    // Allowlist; everything else outside the workspace is blocked
+    "external_directory": {
+      "*": "deny",
+      "~/repo/**": "allow"
+    }
+  }
+}
