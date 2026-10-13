@@ -23,9 +23,7 @@
 
     // Every write confirms; secrets and VCS internals are never writable
     "edit": {
-      "*": "ask",
-      // Mirror read's secret denials exactly — unreadable must mean unwritable
-      "*.env": "deny", "*.env.*": "deny",
+      "*": "allow",
       "**/id_rsa": "deny", "**/*.pem": "deny", "**/*.key": "deny",
       "**/.aws/**": "deny", "**/.ssh/**": "deny",
       "**/.git/**": "deny"
@@ -40,38 +38,53 @@
     "bash": {
       "*": "ask",
 
-      // read-only, no path argument: runs in the cwd, which external_directory
-      // already confines to ~/repo
+      // read-only, no path argument: runs in the cwd
       "pwd": "allow",
       "ls": "allow",
-      "git status*": "allow", "git diff*": "allow", "git log*": "allow",
-      "git show*": "allow", "git branch*": "allow",
+
+      "which*": "allow",
+      "wc*": "allow",
+      "ls*": "allow",
+      "task*": "allow",
+      "mvn*": "allow",
+      "sed*": "allow",
+      "./mvnw*": "allow",
+      "git status*": "allow",
+      "git diff*": "allow",
+      "git log*": "allow",
+      "git show*": "allow",
+      "git branch*": "allow",
 
       // read-only WITH a path: only the workspace is frictionless. Anything
       // absolute outside ~/repo matches no allow and falls through to "ask".
-      "ls /Users/ssmirnov/repo/*": "allow",
       "cat /Users/ssmirnov/repo/*": "allow",
       "head /Users/ssmirnov/repo/*": "allow",
       "tail /Users/ssmirnov/repo/*": "allow",
       "wc /Users/ssmirnov/repo/*": "allow",
       "rg /Users/ssmirnov/repo/*": "allow",
-      "which *": "allow",
 
       // a relative path can climb out of the workspace; refuse the climb
       "../*": "deny", "*../*": "deny",
 
       // secrets: hard-blocked for shell exactly as for read/edit
-      "*.env": "deny", "*.env.*": "deny",
       "*id_rsa*": "deny", "*.pem": "deny", "*.key": "deny",
       "*.aws*": "deny", "*.ssh*": "deny",
 
+      "curl *": "ask", 
+      "wget *": "ask",
+      "git checkout*": "ask",
       // destructive / network / privilege-escalating: hard blocked
-      "rm *": "deny", "sudo *": "deny", "curl *": "deny", "wget *": "deny",
-      "chmod 777*": "deny", "git push*": "deny",
-      "git reset --hard*": "deny", "git clean*": "deny",
-      // state-changing but recoverable: confirm
-      "git add*": "ask", "git commit*": "ask", "git checkout*": "ask",
-      "git switch*": "ask", "git restore*": "ask", "git stash*": "ask"
+      "rm *": "deny", 
+      "sudo *": "deny", 
+      "chmod 777*": "deny", 
+      "git push*": "deny",
+      "git reset --hard*": "deny", 
+      "git clean*": "deny",
+      "git add*": "deny", 
+      "git commit*": "deny", 
+      "git switch*": "deny", 
+      "git restore*": "deny", 
+      "git stash*": "deny"
     },
 
     "webfetch": "ask",         // arbitrary URL fetch is the exfil path
@@ -83,10 +96,11 @@
     "todowrite": "allow",
     "doom_loop": "deny",       // hard-stop a stuck 3x-identical-call loop
 
-    // Allowlist; everything else outside the workspace is blocked
     "external_directory": {
-      "*": "deny",
-      "~/repo/**": "allow"
+      "*": "ask",
+      "~/repo/**": "allow",
+      "~/.dotfiles/**": "allow",
+      "~/Downloads/**": "allow"
     }
   }
 }

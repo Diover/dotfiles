@@ -240,3 +240,6 @@ vim.keymap.set("n", "-", "<cmd>Oil<cr>", { desc = "Open file explorer in the cur
 vim.keymap.set("n", "_", function()
 	require("oil.actions").open_cwd.callback()
 end, { desc = "Open file explorer in cwd [_]" })
+
+-- Overwrite terminal buffer mapping to restore <C-l>
+vim.keymap.set("t", "<C-l>", "<C-l>", { noremap = true })
