@@ -1,3 +1,5 @@
+config-version = 2
+
 # Start AeroSpace at login
 start-at-login = true
 
@@ -214,10 +216,13 @@ if.app-id = 'com.google.Chrome'
 run = "move-node-to-workspace 8"
 
 [[on-window-detected]]
-if.app-name-regex-substring = 'finder'
-run = "layout floating"
+if.app-id = 'org.godotengine.godot'
+run = "move-node-to-workspace 9"
 
 [[on-window-detected]]
 if.app-id = 'com.apple.ActivityMonitor'
 run = "move-node-to-workspace 0"
 
+[[on-window-detected]]
+if.app-name-regex-substring = 'finder'
+run = "layout floating"
