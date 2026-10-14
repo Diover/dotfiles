@@ -23,6 +23,7 @@ local languages = {
 	"regex",
 	"hcl",
 	"terraform",
+	"gdscript",
 }
 return {
 	{
